@@ -1,21 +1,56 @@
 package com.pdp.quize.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.pdp.quize.constant.Role;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
-    @Column(unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint(19) unsigned", unique = true, nullable = false, updatable = false,
+            insertable = false)
+    private BigInteger userId;
+
     private String email;
     private String password;
-    private Role role;
     private String firstName;
     private String lastName;
 
-    public User() {
-        // default no args
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "student")
+    private List<TestResult> testResults;
+
+    @OneToMany(mappedBy = "tutor")
+    private List<Test> tests;
+
+    @ManyToMany
+    @JoinTable(joinColumns = {
+            @JoinColumn(name = "subject_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false)})
+    private List<Subject> subjects;
+
+    public BigInteger getUserId() {
+        return userId;
+    }
+
+    public User setUserId(BigInteger userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public User setRole(Role role) {
+        this.role = role;
+        return this;
     }
 
     public String getEmail() {
@@ -33,15 +68,6 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public User setRole(Role role) {
-        this.role = role;
         return this;
     }
 
@@ -63,34 +89,30 @@ public class User {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        return email.equals(user.email) && password.equals(user.password) && role == user.role
-                && firstName.equals(user.firstName) && lastName.equals(user.lastName);
+    public List<TestResult> getTestResults() {
+        return testResults;
     }
 
-    @Override
-    public int hashCode() {
-        int result = email.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + role.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        return result;
+    public User setTestResults(List<TestResult> testResults) {
+        this.testResults = testResults;
+        return this;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public User setTests(List<Test> tests) {
+        this.tests = tests;
+        return this;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public User setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+        return this;
     }
 }

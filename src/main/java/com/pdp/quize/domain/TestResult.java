@@ -1,45 +1,36 @@
 package com.pdp.quize.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
-public class TestResult {
+public class TestResult implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, updatable = false, insertable = false)
-    private BigInteger id;
-    private User student;
-    private Test test;
+    @Column(columnDefinition = "bigint(19) unsigned", unique = true, nullable = false, updatable = false,
+            insertable = false)
+    private BigInteger testResultId;
+
     private Integer attemptNumber;
     private LocalDateTime lastPassingDate;
     private Integer averageResult;
 
-    public BigInteger getId() {
-        return id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id", nullable = false)
+    private Test test;
+
+    public BigInteger getTestResultId() {
+        return testResultId;
     }
 
-    public TestResult setId(BigInteger id) {
-        this.id = id;
-        return this;
-    }
-
-    public User getStudent() {
-        return student;
-    }
-
-    public TestResult setStudent(User student) {
-        this.student = student;
-        return this;
-    }
-
-    public Test getTest() {
-        return test;
-    }
-
-    public TestResult setTest(Test test) {
-        this.test = test;
+    public TestResult setTestResultId(BigInteger testResultId) {
+        this.testResultId = testResultId;
         return this;
     }
 
@@ -70,37 +61,21 @@ public class TestResult {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TestResult)) return false;
-
-        TestResult that = (TestResult) o;
-
-        return id.equals(that.id) && student.equals(that.student) && test.equals(that.test)
-                && attemptNumber.equals(that.attemptNumber) && lastPassingDate.equals(that.lastPassingDate)
-                && averageResult.equals(that.averageResult);
+    public User getStudent() {
+        return student;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + student.hashCode();
-        result = 31 * result + test.hashCode();
-        result = 31 * result + attemptNumber.hashCode();
-        result = 31 * result + lastPassingDate.hashCode();
-        result = 31 * result + averageResult.hashCode();
-        return result;
+    public TestResult setStudent(User student) {
+        this.student = student;
+        return this;
     }
 
-    @Override
-    public String toString() {
-        return "TestResult{" + "id=" + id +
-                ", student=" + student +
-                ", test=" + test +
-                ", attemptNumber=" + attemptNumber +
-                ", lastPassingDate=" + lastPassingDate +
-                ", averageResult=" + averageResult +
-                '}';
+    public Test getTest() {
+        return test;
+    }
+
+    public TestResult setTest(Test test) {
+        this.test = test;
+        return this;
     }
 }

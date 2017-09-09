@@ -1,57 +1,44 @@
 package com.pdp.quize.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-public class Test {
+public class Test implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, updatable = false, insertable = false)
-    private BigInteger id;
-    private Subject subject;
-    private List<TestItem> testItems;
-    private User tutor;
+    @Column(columnDefinition = "bigint(19) unsigned", unique = true, nullable = false, updatable = false,
+            insertable = false)
+    private BigInteger testId;
+
     private LocalDate availableSince;
     private LocalDate availableUntil;
     private Integer passThreshold;
 
-    public BigInteger getId() {
-        return id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User tutor;
+
+    @OneToMany(mappedBy = "test")
+    private List<TestItem> testItems;
+
+    @OneToMany(mappedBy = "test")
+    private List<TestResult> testResults;
+
+    public BigInteger getTestId() {
+        return testId;
     }
 
-    public Test setId(BigInteger id) {
-        this.id = id;
-        return this;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public Test setSubject(Subject subject) {
-        this.subject = subject;
-        return this;
-    }
-
-    public List<TestItem> getTestItems() {
-        return testItems;
-    }
-
-    public Test setTestItems(List<TestItem> testItems) {
-        this.testItems = testItems;
-        return this;
-    }
-
-    public User getTutor() {
-        return tutor;
-    }
-
-    public Test setTutor(User tutor) {
-        this.tutor = tutor;
+    public Test setTestId(BigInteger testId) {
+        this.testId = testId;
         return this;
     }
 
@@ -82,39 +69,39 @@ public class Test {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Test)) return false;
-
-        Test test = (Test) o;
-
-        return id.equals(test.id) && subject.equals(test.subject) && testItems.equals(test.testItems)
-                && tutor.equals(test.tutor) && availableSince.equals(test.availableSince)
-                && availableUntil.equals(test.availableUntil) && passThreshold.equals(test.passThreshold);
+    public Subject getSubject() {
+        return subject;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + subject.hashCode();
-        result = 31 * result + testItems.hashCode();
-        result = 31 * result + tutor.hashCode();
-        result = 31 * result + availableSince.hashCode();
-        result = 31 * result + availableUntil.hashCode();
-        result = 31 * result + passThreshold.hashCode();
-        return result;
+    public Test setSubject(Subject subject) {
+        this.subject = subject;
+        return this;
     }
 
-    @Override
-    public String toString() {
-        return "Test{" + "id=" + id +
-                ", subject=" + subject +
-                ", testItems=" + testItems +
-                ", tutor=" + tutor +
-                ", availableSince=" + availableSince +
-                ", availableUntil=" + availableUntil +
-                ", passThreshold=" + passThreshold +
-                '}';
+    public User getTutor() {
+        return tutor;
+    }
+
+    public Test setTutor(User tutor) {
+        this.tutor = tutor;
+        return this;
+    }
+
+    public List<TestItem> getTestItems() {
+        return testItems;
+    }
+
+    public Test setTestItems(List<TestItem> testItems) {
+        this.testItems = testItems;
+        return this;
+    }
+
+    public List<TestResult> getTestResults() {
+        return testResults;
+    }
+
+    public Test setTestResults(List<TestResult> testResults) {
+        this.testResults = testResults;
+        return this;
     }
 }
