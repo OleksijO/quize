@@ -1,18 +1,36 @@
 package com.pdp.quize.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 
 @Entity
-public class Subject {
+public class Subject implements Serializable {
     @Id
-    @Column(unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint(19) unsigned", unique = true, nullable = false, updatable = false,
+            insertable = false)
+    private BigInteger subjectId;
+
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User tutor;
+    @ManyToMany(mappedBy = "subjects")
     private List<User> students;
+    @OneToMany(mappedBy = "subject")
     private List<Test> tests;
+
+    public BigInteger getSubjectId() {
+        return subjectId;
+    }
+
+    public Subject setSubjectId(BigInteger subjectId) {
+        this.subjectId = subjectId;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -48,34 +66,5 @@ public class Subject {
     public Subject setTests(List<Test> tests) {
         this.tests = tests;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Subject)) return false;
-
-        Subject subject = (Subject) o;
-
-        return name.equals(subject.name) && tutor.equals(subject.tutor)
-                && students.equals(subject.students) && tests.equals(subject.tests);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + tutor.hashCode();
-        result = 31 * result + students.hashCode();
-        result = 31 * result + tests.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Subject{" + "name='" + name + '\'' +
-                ", tutor=" + tutor +
-                ", students=" + students +
-                ", tests=" + tests +
-                '}';
     }
 }
