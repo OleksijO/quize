@@ -1,0 +1,44 @@
+.login-form {
+    background: lightgray;
+    border: 5px darkgray;
+    max-width: 400px;
+    width: 30%;
+    min-width: 300px;
+    align-content: center;
+}
+
+.register-form {
+    background: lightgray;
+    border: 5px darkgray;
+    max-width: 550px;
+    width: 35%;
+    min-width: 450px;
+    align-content: center;
+}
+
+
+.body {
+    background-color: darkgrey;
+    align-content: center;
+
+}
+
+.holder {
+    background-color: white;
+    max-width: 1024px;
+    padding: 10px;
+}
+
+.header {
+    background-color: green;
+    width:95%;
+    align-content: center;
+    text-align: center;
+}
+
+.footer {
+    background-color: red;
+    width:95%;
+    align-content: center;
+    text-align: center;
+}
