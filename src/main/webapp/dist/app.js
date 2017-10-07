@@ -4489,82 +4489,35 @@ module.exports = require('./lib/React');
 },{"./lib/React":14}],37:[function(require,module,exports){
 let React = require('react');
 
-let ACTIVE = " active";
-let navItems = [{
-    title: 'Hello world',
-    href: ''
-}, {
-    title: 'Check Box Question',
-    href: 'subjects'
-}, {
-    title: 'About',
-    href: 'about'
-}];
-let question = {
-    text: "Which of the following countries border Italy?",
-    answers: ["Switzerland", "France", "The Netherlands", "Germany", "Austria", "Slovenia"]
-};
+module.exports = React.createClass({
+    displayName: "exports",
 
-let NavBar = React.createClass({
-    displayName: 'NavBar',
-
-    getInitialState: function () {
-        return {
-            activeItem: navItems[0]
-        };
-    },
-    setActiveItem: function (item) {
-        this.setState({
-            activeItem: item
-        });
-    },
-    isActiveItem: function (item) {
-        return this.state.activeItem === item;
-    },
     render: function () {
-        let parent = this;
         return React.createElement(
-            'div',
+            "ul",
             null,
+            React.createElement("input", {
+                onClick: "",
+                type: "checkbox", className: "check_box",
+                id: "checkbox " + this.props.answer }),
             React.createElement(
-                'ul',
-                { className: 'nav_bar' },
-                this.props.items.map(function (item) {
-                    return React.createElement(NavItem, { item: item,
-                        isActive: parent.isActiveItem,
-                        setActive: parent.setActiveItem,
-                        key: item.title + item.href
-                    });
-                })
+                "label",
+                {
+                    id: "label for " + this.props.answer,
+                    htmlFor: "checkbox " + this.props.answer },
+                this.props.answer
             )
         );
     }
 });
 
-let NavItem = React.createClass({
-    displayName: 'NavItem',
+},{"react":36}],38:[function(require,module,exports){
+let React = require('react');
 
+let CheckBoxAnswer = require('./CheckBoxAnswer.jsx');
 
-    render: function () {
-        let activeStyle = this.props.isActive(this.props.item) ? ACTIVE : '';
-        return React.createElement(
-            'li',
-            { className: "nav_item " + activeStyle, onClick: this.setActive },
-            React.createElement(
-                'a',
-                { className: "nav_item_href " + activeStyle, href: "#" + this.props.item.href },
-                this.props.item.title
-            )
-        );
-    },
-    setActive: function () {
-        this.props.setActive(this.props.item);
-        routie(this.props.item.href);
-    }
-});
-
-let CheckBoxQuestion = React.createClass({
-    displayName: 'CheckBoxQuestion',
+module.exports = React.createClass({
+    displayName: 'exports',
 
     render: function () {
         return React.createElement(
@@ -4593,30 +4546,11 @@ let CheckBoxQuestion = React.createClass({
     }
 });
 
-let CheckBoxAnswer = React.createClass({
-    displayName: 'CheckBoxAnswer',
+},{"./CheckBoxAnswer.jsx":37,"react":36}],39:[function(require,module,exports){
+let React = require('react');
 
-    render: function () {
-        return React.createElement(
-            'ul',
-            null,
-            React.createElement('input', {
-                onClick: '',
-                type: 'checkbox', className: 'check_box',
-                id: "checkbox " + this.props.answer }),
-            React.createElement(
-                'label',
-                {
-                    id: "label for " + this.props.answer,
-                    htmlFor: "checkbox " + this.props.answer },
-                this.props.answer
-            )
-        );
-    }
-});
-
-let HelloWorld = React.createClass({
-    displayName: 'HelloWorld',
+module.exports = React.createClass({
+    displayName: 'exports',
 
     render: function () {
         return React.createElement(
@@ -4631,18 +4565,206 @@ let HelloWorld = React.createClass({
     }
 });
 
+},{"react":36}],40:[function(require,module,exports){
+let React = require('react');
+let ACTIVE = " active";
+
+module.exports = React.createClass({
+    displayName: "exports",
+
+    getInitialState: function () {
+        return {
+            activeItem: this.props.items[0]
+        };
+    },
+    setActiveItem: function (item) {
+        this.setState({
+            activeItem: item
+        });
+    },
+    isActiveItem: function (item) {
+        return this.state.activeItem === item;
+    },
+    render: function () {
+        let parent = this;
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "ul",
+                { className: "nav_bar" },
+                this.props.items.map(function (item) {
+                    return React.createElement(NavItem, { item: item,
+                        isActive: parent.isActiveItem,
+                        setActive: parent.setActiveItem,
+                        key: item.title + item.href
+                    });
+                })
+            )
+        );
+    }
+});
+
+let NavItem = React.createClass({
+    displayName: "NavItem",
+
+
+    render: function () {
+        let activeStyle = this.props.isActive(this.props.item) ? ACTIVE : '';
+        return React.createElement(
+            "li",
+            { className: "nav_item " + activeStyle, onClick: this.setActive },
+            React.createElement(
+                "a",
+                { className: "nav_item_href " + activeStyle, href: "#" + this.props.item.href },
+                this.props.item.title
+            )
+        );
+    },
+    setActive: function () {
+        this.props.setActive(this.props.item);
+        routie(this.props.item.href);
+    }
+});
+
+},{"react":36}],41:[function(require,module,exports){
+let React = require('react');
+
+module.exports = React.createClass({
+    displayName: "exports",
+
+    render: function () {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { className: "row centered-form" },
+                React.createElement(
+                    "div",
+                    { className: "col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4" },
+                    React.createElement(
+                        "div",
+                        { className: "panel panel-default" },
+                        React.createElement(
+                            "div",
+                            { className: "panel-heading" },
+                            React.createElement(
+                                "h3",
+                                { className: "panel-title" },
+                                "Please sign up for Bootsnipp"
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "panel-body" },
+                            React.createElement(
+                                "form",
+                                { role: "form" },
+                                React.createElement(
+                                    "div",
+                                    { className: "row" },
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement(
+                                            "div",
+                                            { className: "form-group" },
+                                            React.createElement("input", { type: "text", name: "first_name", id: "first_name",
+                                                className: "form-control input-sm", placeholder: "First Name" })
+                                        )
+                                    ),
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement(
+                                            "div",
+                                            { className: "form-group" },
+                                            React.createElement("input", { type: "text", name: "last_name", id: "last_name",
+                                                className: "form-control input-sm", placeholder: "Last Name" })
+                                        )
+                                    )
+                                ),
+                                React.createElement(
+                                    "div",
+                                    { className: "form-group" },
+                                    React.createElement("input", { type: "email", name: "email", id: "email", className: "form-control input-sm",
+                                        placeholder: "Email Address" })
+                                ),
+                                React.createElement(
+                                    "div",
+                                    { className: "row" },
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement(
+                                            "div",
+                                            { className: "form-group" },
+                                            React.createElement("input", { type: "password", name: "password", id: "password",
+                                                className: "form-control input-sm", placeholder: "Password" })
+                                        )
+                                    ),
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement(
+                                            "div",
+                                            { className: "form-group" },
+                                            React.createElement("input", { type: "password", name: "password_confirmation",
+                                                id: "password_confirmation", className: "form-control input-sm",
+                                                placeholder: "Confirm Password" })
+                                        )
+                                    )
+                                ),
+                                React.createElement("input", { type: "submit", value: "Register", className: "btn btn-info btn-block" })
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+},{"react":36}],42:[function(require,module,exports){
+let React = require('react');
+
+let RegistrationForm = require('./RegisterForm.jsx');
+let NavBar = require('./NavBar.jsx');
+let HelloWorld = require('./HelloWorld.jsx');
+let CheckBoxQuestion = require('./CheckBoxQuestion.jsx');
+
+let REGISTER = 'register';
+let HOME = '';
+let SUBJECTS = 'subjects';
+let ABOUT = 'about';
+
+let navItems = [{
+    title: 'Hello world',
+    href: HOME
+}, {
+    title: 'Check Box Question',
+    href: SUBJECTS
+}, {
+    title: 'About',
+    href: ABOUT
+}, {
+    title: 'Registration',
+    href: REGISTER
+}];
+
+let question = {
+    text: "Which of the following countries border Italy?",
+    answers: ["Switzerland", "France", "The Netherlands", "Germany", "Austria", "Slovenia"]
+};
+
+// Navigation initialization
+
 ReactDOM.render(React.createElement(NavBar, { items: navItems }), document.getElementById("navBar"));
 
-ReactDOM.render(React.createElement(
-    'div',
-    null,
-    React.createElement(HelloWorld, { name: 'Nastya', action: 'eating' }),
-    React.createElement(HelloWorld, { name: 'Katya', action: 'football' }),
-    React.createElement(HelloWorld, { name: 'Vasya', action: 'walking' }),
-    React.createElement(HelloWorld, { name: 'Ivan', action: 'swimming' })
-), document.getElementById("content"));
+// Routing configuration
 
-routie(navItems[0].href, function () {
+routie(HOME, function () {
     ReactDOM.render(React.createElement(
         'div',
         null,
@@ -4653,11 +4775,11 @@ routie(navItems[0].href, function () {
     ), document.getElementById("content"));
 });
 
-routie(navItems[1].href, function () {
+routie(SUBJECTS, function () {
     ReactDOM.render(React.createElement(CheckBoxQuestion, { question: question }), document.getElementById("content"));
 });
 
-routie(navItems[2].href, function () {
+routie(ABOUT, function () {
     ReactDOM.render(React.createElement(
         'div',
         null,
@@ -4665,4 +4787,8 @@ routie(navItems[2].href, function () {
     ), document.getElementById("content"));
 });
 
-},{"react":36}]},{},[37]);
+routie(REGISTER, function () {
+    ReactDOM.render(React.createElement(RegistrationForm, null), document.getElementById("content"));
+});
+
+},{"./CheckBoxQuestion.jsx":38,"./HelloWorld.jsx":39,"./NavBar.jsx":40,"./RegisterForm.jsx":41,"react":36}]},{},[42]);

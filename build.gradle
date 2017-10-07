@@ -23,7 +23,6 @@ node {
 }
 
 war {
-    //from 'src/main/webapp'
     archiveName = 'quize.war'
 }
 
