@@ -48,6 +48,16 @@ ReactDOM.render(
     document.getElementById("navBar")
 );
 
+ReactDOM.render(
+    <div>
+        <HelloWorld name="Nastya" action="eating"/>
+        <HelloWorld name="Katya" action="football"/>
+        <HelloWorld name="Vasya" action="walking"/>
+        <HelloWorld name="Ivan" action="swimming"/>
+    </div>,
+    document.getElementById("content")
+);
+
 // Routing configuration
 
 routie(HOME, function () {

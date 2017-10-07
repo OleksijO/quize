@@ -1,6 +1,54 @@
 let React = require('react');
 
+function submitForm(form) {
+    let submitDto = {
+        firstName: form.state.firstName,
+        lastName: form.state.lastName,
+        email: form.state.email,
+        password: form.state.password,
+        isTutor: form.state.isTutor
+    };
+
+    log(submitDto);
+
+    //on success
+    form.setState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        isTutor: false
+    });
+    // and route on login page
+
+}
+
+let log = (e) => console.log(e);
+
 module.exports = React.createClass({
+    getInitialState: function () {
+        return {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            passwordConfirmation: "",
+            isTutor: false,
+        };
+    },
+    handleSubmit: function (e) {
+        e.preventDefault();
+        submitForm(this);
+    },
+    setValue: function (field, event) {
+        let object = {};
+        object[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        this.setState(object);
+        log(this.state);
+        log(event);
+    },
+
+
     render: function () {
         return (
             <div>
@@ -9,55 +57,74 @@ module.exports = React.createClass({
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h3 className="panel-title">
-                                    Please sign up for Bootsnipp
+                                    Please sign up
                                 </h3>
                             </div>
                             <div className="panel-body">
-                                <form role="form">
+                                <form onSubmit={this.handleSubmit}>
+
                                     <div className="row">
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <input type="text" name="first_name" id="first_name"
-                                                       className="form-control input-sm" placeholder="First Name"/>
+                                                       className="form-control input-sm" placeholder="First Name"
+                                                       onChange={this.setValue.bind(this, 'firstName')}/>
                                             </div>
                                         </div>
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <input type="text" name="last_name" id="last_name"
-                                                       className="form-control input-sm" placeholder="Last Name"/>
+                                                       className="form-control input-sm" placeholder="Last Name"
+                                                       onChange={this.setValue.bind(this, 'lastName')}/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="form-group">
                                         <input type="email" name="email" id="email" className="form-control input-sm"
-                                               placeholder="Email Address"/>
+                                               placeholder="Email Address"
+                                               onChange={this.setValue.bind(this, 'email')}/>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <input type="password" name="password" id="password"
-                                                       className="form-control input-sm" placeholder="Password"/>
+                                                       className="form-control input-sm" placeholder="Password"
+                                                       onChange={this.setValue.bind(this, 'password')}/>
                                             </div>
                                         </div>
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <div className="form-group">
                                                 <input type="password" name="password_confirmation"
                                                        id="password_confirmation" className="form-control input-sm"
-                                                       placeholder="Confirm Password"/>
+                                                       placeholder="Confirm Password"
+                                                       onChange={this.setValue.bind(this, 'passwordConfirmation')}/>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <input type="submit" value="Register" className="btn btn-info btn-block"/>
-
+                                    <div className="row">
+                                        <div className="col-xs-6 col-sm-6 col-md-6">
+                                            <div className="checkbox checkbox-primary">
+                                                <input type="checkbox" name="I am a tutor" id="isTutor"
+                                                       onChange={this.setValue.bind(this, 'isTutor')}
+                                                       style={{display: false}}/>
+                                                <label htmlFor="isTutor">
+                                                    &nbsp; I am a tutor
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="col-xs-6 col-sm-6 col-md-6">
+                                            <input type="submit" value="Register" className="btn btn-info btn-block"/>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         );
     }
 });

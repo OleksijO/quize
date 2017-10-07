@@ -4567,6 +4567,7 @@ module.exports = React.createClass({
 
 },{"react":36}],40:[function(require,module,exports){
 let React = require('react');
+
 let ACTIVE = " active";
 
 module.exports = React.createClass({
@@ -4586,20 +4587,17 @@ module.exports = React.createClass({
         return this.state.activeItem === item;
     },
     render: function () {
-        let parent = this;
         return React.createElement(
             "div",
             null,
             React.createElement(
                 "ul",
                 { className: "nav_bar" },
-                this.props.items.map(function (item) {
-                    return React.createElement(NavItem, { item: item,
-                        isActive: parent.isActiveItem,
-                        setActive: parent.setActiveItem,
-                        key: item.title + item.href
-                    });
-                })
+                this.props.items.map(item => React.createElement(NavItem, { item: item,
+                    isActive: this.isActiveItem,
+                    setActive: this.setActiveItem,
+                    key: item.title + item.href
+                }))
             )
         );
     }
@@ -4616,7 +4614,8 @@ let NavItem = React.createClass({
             { className: "nav_item " + activeStyle, onClick: this.setActive },
             React.createElement(
                 "a",
-                { className: "nav_item_href " + activeStyle, href: "#" + this.props.item.href },
+                { className: "nav_item_href " + activeStyle,
+                    href: "#" + this.props.item.href },
                 this.props.item.title
             )
         );
@@ -4630,8 +4629,58 @@ let NavItem = React.createClass({
 },{"react":36}],41:[function(require,module,exports){
 let React = require('react');
 
+function submitForm(form) {
+    let submitDto = {
+        firstName: form.state.firstName,
+        lastName: form.state.lastName,
+        email: form.state.email,
+        password: form.state.password,
+        isTutor: form.state.isTutor
+    };
+
+    log(submitDto);
+
+    //on success
+    form.setState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        isTutor: false
+    });
+    // and route on login page
+}
+
+let log = function (e) {
+    console.log(e);
+};
+
 module.exports = React.createClass({
     displayName: "exports",
+
+    getInitialState: function () {
+        return {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            passwordConfirmation: "",
+            isTutor: false
+        };
+    },
+    handleSubmit: function (e) {
+        //we don't want the form to submit, so we prevent the default behavior
+        e.preventDefault();
+
+        submitForm(this);
+    },
+    setValue: function (field, event) {
+        let object = {};
+        object[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        this.setState(object);
+        log(this.state);
+        log(event);
+    },
 
     render: function () {
         return React.createElement(
@@ -4652,7 +4701,7 @@ module.exports = React.createClass({
                             React.createElement(
                                 "h3",
                                 { className: "panel-title" },
-                                "Please sign up for Bootsnipp"
+                                "Please sign up"
                             )
                         ),
                         React.createElement(
@@ -4660,7 +4709,7 @@ module.exports = React.createClass({
                             { className: "panel-body" },
                             React.createElement(
                                 "form",
-                                { role: "form" },
+                                { onSubmit: this.handleSubmit },
                                 React.createElement(
                                     "div",
                                     { className: "row" },
@@ -4671,7 +4720,8 @@ module.exports = React.createClass({
                                             "div",
                                             { className: "form-group" },
                                             React.createElement("input", { type: "text", name: "first_name", id: "first_name",
-                                                className: "form-control input-sm", placeholder: "First Name" })
+                                                className: "form-control input-sm", placeholder: "First Name",
+                                                onChange: this.setValue.bind(this, 'firstName') })
                                         )
                                     ),
                                     React.createElement(
@@ -4681,7 +4731,8 @@ module.exports = React.createClass({
                                             "div",
                                             { className: "form-group" },
                                             React.createElement("input", { type: "text", name: "last_name", id: "last_name",
-                                                className: "form-control input-sm", placeholder: "Last Name" })
+                                                className: "form-control input-sm", placeholder: "Last Name",
+                                                onChange: this.setValue.bind(this, 'lastName') })
                                         )
                                     )
                                 ),
@@ -4689,7 +4740,8 @@ module.exports = React.createClass({
                                     "div",
                                     { className: "form-group" },
                                     React.createElement("input", { type: "email", name: "email", id: "email", className: "form-control input-sm",
-                                        placeholder: "Email Address" })
+                                        placeholder: "Email Address",
+                                        onChange: this.setValue.bind(this, 'email') })
                                 ),
                                 React.createElement(
                                     "div",
@@ -4701,7 +4753,8 @@ module.exports = React.createClass({
                                             "div",
                                             { className: "form-group" },
                                             React.createElement("input", { type: "password", name: "password", id: "password",
-                                                className: "form-control input-sm", placeholder: "Password" })
+                                                className: "form-control input-sm", placeholder: "Password",
+                                                onChange: this.setValue.bind(this, 'password') })
                                         )
                                     ),
                                     React.createElement(
@@ -4712,11 +4765,36 @@ module.exports = React.createClass({
                                             { className: "form-group" },
                                             React.createElement("input", { type: "password", name: "password_confirmation",
                                                 id: "password_confirmation", className: "form-control input-sm",
-                                                placeholder: "Confirm Password" })
+                                                placeholder: "Confirm Password",
+                                                onChange: this.setValue.bind(this, 'passwordConfirmation') })
                                         )
                                     )
                                 ),
-                                React.createElement("input", { type: "submit", value: "Register", className: "btn btn-info btn-block" })
+                                React.createElement(
+                                    "div",
+                                    { className: "row" },
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement(
+                                            "div",
+                                            { className: "checkbox checkbox-primary" },
+                                            React.createElement("input", { type: "checkbox", name: "I am a tutor", id: "isTutor",
+                                                onChange: this.setValue.bind(this, 'isTutor'),
+                                                style: { display: false } }),
+                                            React.createElement(
+                                                "label",
+                                                { htmlFor: "isTutor" },
+                                                "\xA0 I am a tutor"
+                                            )
+                                        )
+                                    ),
+                                    React.createElement(
+                                        "div",
+                                        { className: "col-xs-6 col-sm-6 col-md-6" },
+                                        React.createElement("input", { type: "submit", value: "Register", className: "btn btn-info btn-block" })
+                                    )
+                                )
                             )
                         )
                     )
@@ -4761,6 +4839,15 @@ let question = {
 // Navigation initialization
 
 ReactDOM.render(React.createElement(NavBar, { items: navItems }), document.getElementById("navBar"));
+
+ReactDOM.render(React.createElement(
+    'div',
+    null,
+    React.createElement(HelloWorld, { name: 'Nastya', action: 'eating' }),
+    React.createElement(HelloWorld, { name: 'Katya', action: 'football' }),
+    React.createElement(HelloWorld, { name: 'Vasya', action: 'walking' }),
+    React.createElement(HelloWorld, { name: 'Ivan', action: 'swimming' })
+), document.getElementById("content"));
 
 // Routing configuration
 
