@@ -1,3 +1,5 @@
+let React = require('react');
+
 let ACTIVE = " active";
 let navItems = [
     {
