@@ -1,4 +1,7 @@
 let React = require('react');
+let crudFetch = require('crud-fetch');
+
+let URI = "server/registration";
 
 function submitForm(form) {
     let submitDto = {
@@ -11,16 +14,18 @@ function submitForm(form) {
 
     log(submitDto);
 
-    //on success
-    form.setState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        isTutor: false
-    });
-    // and route on login page
-
+    crudFetch.put(URI, submitDto)
+        .then(() => {
+            form.setState({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                isTutor: false
+            });
+            routie('login')
+        })
+        .catch((error) => form.setState({errorMessage: error.toString()}));
 }
 
 let log = (e) => console.log(e);
@@ -34,6 +39,7 @@ module.exports = React.createClass({
             password: "",
             passwordConfirmation: "",
             isTutor: false,
+            errorMessage: ""
         };
     },
     handleSubmit: function (e) {
@@ -116,6 +122,11 @@ module.exports = React.createClass({
                                         </div>
                                         <div className="col-xs-6 col-sm-6 col-md-6">
                                             <input type="submit" value="Register" className="btn btn-info btn-block"/>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-xs-12 col-sm-12 col-md-12">
+                                            <span style={{color:"red"}}>{this.state.errorMessage}</span>
                                         </div>
                                     </div>
                                 </form>
