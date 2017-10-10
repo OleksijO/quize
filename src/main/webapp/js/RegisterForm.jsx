@@ -16,6 +16,7 @@ function submitForm(form) {
 
     if (submitDto.password !== form.state.passwordConfirmation){
         form.setState({errorMessage: 'Password and confirm pwrd fields should be the same'});
+        return;
     }
 
     crudFetch.put(URI, submitDto)
