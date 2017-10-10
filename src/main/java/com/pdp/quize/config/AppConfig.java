@@ -25,7 +25,11 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:application_properties.properties")
-@ComponentScan("com.pdp.quize.controller")
+@ComponentScan({
+        "com.pdp.quize.controller",
+        "com.pdp.quize.service"
+
+})
 @EnableJpaRepositories("com.pdp.quize.repository")
 public class AppConfig {
 

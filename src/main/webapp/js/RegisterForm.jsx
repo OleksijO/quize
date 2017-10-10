@@ -4,15 +4,19 @@ let crudFetch = require('crud-fetch');
 let URI = "server/registration";
 
 function submitForm(form) {
+    form.setState({errorMessage: ''});
+
     let submitDto = {
         firstName: form.state.firstName,
         lastName: form.state.lastName,
         email: form.state.email,
         password: form.state.password,
-        isTutor: form.state.isTutor
+        role: form.state.isTutor===true? "TUTOR": "STUDENT"
     };
 
-    log(submitDto);
+    if (submitDto.password !== form.state.passwordConfirmation){
+        form.setState({errorMessage: 'Password and confirm pwrd fields should be the same'});
+    }
 
     crudFetch.put(URI, submitDto)
         .then(() => {

@@ -11,8 +11,4 @@ public class AppController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/")
-    public String indexPage() {
-        return "index";
-    }
 }
