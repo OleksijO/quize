@@ -22,7 +22,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import java.util.Properties;
 
 @Configuration
-@EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:application_properties.properties")
 @ComponentScan({
@@ -35,14 +34,6 @@ public class AppConfig {
 
     @Autowired
     private Environment env;
-
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {

@@ -27,4 +27,4 @@ hs_err_pid*
 .idea/
 quize.iml
 node_modules/
-/src/main/webapp/dist/app.js
+/src/main/resources/static/dist/app.js
