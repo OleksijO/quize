@@ -90,6 +90,7 @@ Pages:
 <b>Technology stack:</b>
 <ul>
   <li>Spring Core</li>
+  <li>Spring Boot</li>
   <li>Spring Data/RestData</li>
   <li>Spring Security</li>
   <li>Hibernate</li>
