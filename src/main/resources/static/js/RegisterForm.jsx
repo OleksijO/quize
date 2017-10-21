@@ -1,7 +1,7 @@
 let React = require('react');
 let crudFetch = require('crud-fetch');
 
-let URI = "server/registration";
+let URI = "registration";
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
