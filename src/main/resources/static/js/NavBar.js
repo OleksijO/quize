@@ -1,23 +1,26 @@
-let React = require('react');
+import React from 'react';
 
-let ACTIVE = " active";
+const ACTIVE = " active";
 
-module.exports = React.createClass({
-    getInitialState: function () {
-        return {
-            activeItem: this.props.items[0]
-        }
-    },
-    setActiveItem: function (item) {
+export default class NavBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state= { activeItem: props.items[0] };
+        this.setActiveItem = this.setActiveItem.bind(this);
+        this.isActiveItem = this.isActiveItem.bind(this);
+    }
+
+    setActiveItem(item) {
         this.setState({
             activeItem: item
         })
-    },
-    isActiveItem: function (item) {
-        return this.state.activeItem === item;
+    }
 
-    },
-    render: function () {
+    isActiveItem(item) {
+        return this.state.activeItem === item;
+    }
+
+    render() {
         let parent = this;
         return (
             <div>
@@ -34,11 +37,15 @@ module.exports = React.createClass({
             </div>
         )
     }
-});
+}
 
-let NavItem = React.createClass({
+class NavItem extends React.Component {
+    constructor(props){
+        super(props);
+        this.setActive = this.setActive.bind(this);
+    }
 
-    render: function () {
+    render() {
         let activeStyle = this.props.isActive(this.props.item) ? ACTIVE : '';
         return (
             <li className={"nav_item " + activeStyle} onClick={this.setActive}>
@@ -46,9 +53,10 @@ let NavItem = React.createClass({
                    href={"#" + this.props.item.href}>{this.props.item.title}</a>
             </li>
         )
-    },
-    setActive: function () {
+    }
+
+    setActive() {
         this.props.setActive(this.props.item);
         routie(this.props.item.href);
     }
-});
+}

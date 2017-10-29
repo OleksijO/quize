@@ -1,14 +1,15 @@
-let React = require('react');
+import React from 'react';
 
-let RegistrationForm = require('./RegisterForm.jsx');
-let NavBar = require('./NavBar.jsx');
-let HelloWorld = require('./HelloWorld.jsx');
-let CheckBoxQuestion = require('./CheckBoxQuestion.jsx');
+import RegistrationForm from './RegisterForm.js';
+import NavBar from './NavBar.js';
+import HelloWorld from './HelloWorld.js';
+import CheckBoxQuestion from './CheckBoxQuestion.js';
 
-let REGISTER = 'register';
-let HOME = '';
-let SUBJECTS = 'subjects';
-let ABOUT = 'about';
+
+const REGISTER = 'register';
+const HOME = '';
+const SUBJECTS = 'subjects';
+const ABOUT = 'about';
 
 let navItems = [
     {

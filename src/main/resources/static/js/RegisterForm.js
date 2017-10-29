@@ -1,7 +1,8 @@
-let React = require('react');
-let crudFetch = require('crud-fetch');
+import React from 'react';
+import crudFetch from 'crud-fetch';
 
-let URI = "registration";
+const URI = "registration";
+const log = (e) => console.log(e);
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
@@ -33,11 +34,10 @@ function submitForm(form) {
         .catch((error) => form.setState({errorMessage: error.toString()}));
 }
 
-let log = (e) => console.log(e);
-
-module.exports = React.createClass({
-    getInitialState: function () {
-        return {
+export default class RegisterForm extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
             firstName: "",
             lastName: "",
             email: "",
@@ -46,21 +46,24 @@ module.exports = React.createClass({
             isTutor: false,
             errorMessage: ""
         };
-    },
-    handleSubmit: function (e) {
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.setValue = this.setValue.bind(this);
+    }
+
+    handleSubmit(e) {
         e.preventDefault();
         submitForm(this);
-    },
-    setValue: function (field, event) {
+    }
+
+    setValue(field, event) {
         let object = {};
         object[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState(object);
         log(this.state);
         log(event);
-    },
+    }
 
-
-    render: function () {
+    render() {
         return (
             <div>
                 <div className="row centered-form">
@@ -143,4 +146,4 @@ module.exports = React.createClass({
 
         );
     }
-});
+}

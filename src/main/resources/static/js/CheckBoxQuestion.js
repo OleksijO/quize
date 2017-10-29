@@ -1,9 +1,9 @@
-let React = require('react');
+import React from 'react';
 
-let CheckBoxAnswer = require('./CheckBoxAnswer.jsx');
+import CheckBoxAnswer from './CheckBoxAnswer.js';
 
-module.exports = React.createClass({
-    render: function () {
+export default class CheckBoxQuestion extends React.Component {
+    render() {
         return (
             <div className="questioncontainer">
                 <div className="questionstem">
@@ -22,4 +22,4 @@ module.exports = React.createClass({
             </div>
         );
     }
-});
+}

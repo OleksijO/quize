@@ -1,7 +1,7 @@
-let React = require('react');
+import React from 'react';
 
-module.exports = React.createClass({
-    render: function () {
+export default class CheckBoxAnswer extends React.Component {
+    render() {
         return (
             <ul><input
                 onClick=""
@@ -13,4 +13,4 @@ module.exports = React.createClass({
             </ul>
         );
     }
-});
+}
