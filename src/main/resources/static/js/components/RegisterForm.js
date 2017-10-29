@@ -1,7 +1,10 @@
 import React from 'react';
 import crudFetch from 'crud-fetch';
 
-const URI = "registration";
+import Routes from './navigation/Routes';
+import Role from '../Role';
+
+const URI = Routes.REGISTER;
 const log = (e) => console.log(e);
 
 function submitForm(form) {
@@ -12,7 +15,7 @@ function submitForm(form) {
         lastName: form.state.lastName,
         email: form.state.email,
         password: form.state.password,
-        role: form.state.isTutor===true? "TUTOR": "STUDENT"
+        role: form.state.isTutor===true? Role.TUTOR: Role.STUDENT
     };
 
     if (submitDto.password !== form.state.passwordConfirmation){
@@ -29,7 +32,7 @@ function submitForm(form) {
                 password: "",
                 isTutor: false
             });
-            routie('login')
+            routie(Routes.LOGIN)
         })
         .catch((error) => form.setState({errorMessage: error.toString()}));
 }

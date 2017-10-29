@@ -5,7 +5,10 @@ const ACTIVE = " active";
 export default class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state= { activeItem: props.items[0] };
+
+        let navItems = props.getNavItems();
+        this.state= { activeItem: navItems[0] };
+
         this.setActiveItem = this.setActiveItem.bind(this);
         this.isActiveItem = this.isActiveItem.bind(this);
     }
@@ -25,7 +28,7 @@ export default class NavBar extends React.Component {
         return (
             <div>
                 <ul className="nav_bar">
-                    {this.props.items.map(function (item) {
+                    {this.props.getNavItems().map(function (item) {
                         return (
                             <NavItem item={item}
                                      isActive={parent.isActiveItem}

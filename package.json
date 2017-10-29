@@ -5,7 +5,7 @@
   "main": "app.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify -t [ babelify --presets [ env react ] ] src/main/resources/static/js/app.js -o src/main/resources/static/dist/app.js"
+    "build": "browserify -t [ babelify --presets [ env react ] ] src/main/resources/static/js/main.js -o src/main/resources/static/dist/app.js"
   },
   "repository": {
     "type": "git",
