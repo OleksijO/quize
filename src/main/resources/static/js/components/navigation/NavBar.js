@@ -7,7 +7,9 @@ export default class NavBar extends React.Component {
         super(props);
 
         let navItems = props.getNavItems();
-        this.state= { activeItem: navItems[0] };
+        let initItem = navItems.find((el) => el.href === props.initPath);
+        initItem = initItem ? initItem : navItems[0];
+        this.state = {activeItem: initItem};
 
         this.setActiveItem = this.setActiveItem.bind(this);
         this.isActiveItem = this.isActiveItem.bind(this);

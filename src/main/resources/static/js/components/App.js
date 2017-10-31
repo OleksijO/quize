@@ -21,46 +21,25 @@ const question = {
     ]
 };
 
-export default class App extends React.Component{
-    constructor(props){
+export default class App extends React.Component {
+    constructor(props) {
         super(props);
 
         this.getNavItems = this.getNavItems.bind(this);
         this.setNavItems = this.setNavItems.bind(this);
-        this.setContent = this.setContent.bind(this);
-
-        let home = <Home />;
-        let checkBox = <CheckBoxQuestion question={question}/>;
-        let about = <div>ABOUT PAGE CONTENT</div>;
-        let registration = <RegistrationForm />;
-        let login = <LoginForm setNavItems = {this.setNavItems}/>;
-
-        // setting initial content
-        this.setContent(home);
-
-        //configuring routing
-        routie(Routes.HOME, () => this.setContent(home));
-        routie(Routes.SUBJECTS, () => this.setContent(checkBox));
-        routie(Routes.ABOUT, () => this.setContent(about));
-        routie(Routes.REGISTER, () => this.setContent(registration));
-        routie(Routes.LOGIN, () => this.setContent(login));
+        this.insertContent = this.insertContent.bind(this);
 
         this.state = {
             navItems: NavItemSets.getDefault(),
-            content: home
         };
     }
 
-    setContent(content){
-        this.setState({content: content});
-    }
-
-    getNavItems(){
+    getNavItems() {
         return this.state.navItems;
     }
 
-    setNavItems(navItems){
-        this.state.navItems = navItems;
+    setNavItems(navItems) {
+        this.setState({navItems:  navItems});
     }
 
     render() {
@@ -69,14 +48,14 @@ export default class App extends React.Component{
                 <div className="row justify-content-center">
                     <div className="col-10">
                         <div id="navBar">
-                            <NavBar getNavItems = {this.getNavItems} />
+                            <NavBar getNavItems={this.getNavItems} initPath={this.props.path}/>
                         </div>
                     </div>
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-10">
                         <div id="content">
-                            {this.state.content}
+                            {this.insertContent()}
                         </div>
                     </div>
                 </div>
@@ -84,5 +63,23 @@ export default class App extends React.Component{
         );
     }
 
+    insertContent() {
+        switch (this.props.path) {
+            case Routes.SUBJECTS:
+                return <CheckBoxQuestion question={question}/>;
+                break;
+            case Routes.ABOUT:
+                return <div>ABOUT PAGE CONTENT</div>;
+                break;
+            case Routes.REGISTER:
+                return <RegistrationForm/>;
+                break;
+            case Routes.LOGIN:
+                return <LoginForm setNavItems={this.setNavItems}/>;
+                break;
+            default:
+                return <Home />
+        }
+    }
 }
 

@@ -1,8 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
 
-import App from "./components/App";
+import RoutesConfig from "./RoutesConfig";
 
-ReactDOM.render(
-    <App />,   document.getElementById("app")
-);
+RoutesConfig.apply();

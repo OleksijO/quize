@@ -2,12 +2,15 @@ package com.pdp.quize.service;
 
 import com.pdp.quize.constant.Role;
 import com.pdp.quize.domain.User;
+import com.pdp.quize.domain.dto.LoginDto;
 import com.pdp.quize.domain.dto.RegistrationDto;
 import com.pdp.quize.repository.UserRepository;
 import com.pdp.quize.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalTime;
 
 @Service
 public class UserService {
@@ -27,6 +30,21 @@ public class UserService {
             throw new RuntimeException("User with specified email already exists");
         }
         userRepository.save(user);
+    }
+
+    public RegistrationDto login(LoginDto loginDto) {
+        User user = userRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword());
+        RegistrationDto dto = new RegistrationDto();
+        if (user == null) {
+            dto.setRole("");
+            return dto;
+        }
+
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        Role role = LocalTime.now().getSecond() % 2 == 0 ? Role.STUDENT : Role.TEACHER;
+        dto.setRole(role.toString());
+        return dto;
     }
 
 }

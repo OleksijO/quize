@@ -1,6 +1,7 @@
 import React from 'react';
 import crudFetch from 'crud-fetch';
 import Routes from './navigation/Routes'
+import NavItemSets from "../NavItemSets";
 
 const URI = Routes.LOGIN;
 const log = (e) => console.log(e);
@@ -14,26 +15,26 @@ function submitForm(form) {
     };
 
     crudFetch.post(URI, submitDto)
-        .then((role) => {
+        .then((user) => {
+
+            form.props.setNavItems(NavItemSets.getByRole(user.role));
+
             form.setState({
                 email: "",
                 password: "",
+                errorMessage: ""
             });
             routie(Routes.AFTER_LOGIN)
         })
-        .catch((error) => form.setState({errorMessage: error.toString()}));
+        .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist'}));
 }
 
 export default class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName: "",
-            lastName: "",
             email: "",
             password: "",
-            passwordConfirmation: "",
-            isTutor: false,
             errorMessage: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -74,14 +75,14 @@ export default class LoginForm extends React.Component {
                                     </div>
 
                                     <div className="form-group">
-                                        <input type="password" name="password_confirmation"
-                                               id="password_confirmation" className="form-control input-sm"
-                                               placeholder="Confirm Password"
-                                               onChange={this.setValue.bind(this, 'passwordConfirmation')}/>
+                                        <input type="password" name="password"
+                                               id="password" className="form-control input-sm"
+                                               placeholder="Password"
+                                               onChange={this.setValue.bind(this, 'password')}/>
                                     </div>
 
                                     <div className="row">
-                                        <input type="submit" value="Register" className="btn btn-info btn-block"/>
+                                        <input type="submit" value="Log in" className="btn btn-info btn-block"/>
                                     </div>
                                     <div className="row">
                                         <div className="col-xs-12 col-sm-12 col-md-12">
