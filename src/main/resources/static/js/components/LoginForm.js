@@ -2,6 +2,7 @@ import React from 'react';
 import crudFetch from 'crud-fetch';
 import Routes from './navigation/Routes'
 import NavItemSets from "../NavItemSets";
+import {Redirect} from "react-router-dom";
 
 const URI = Routes.LOGIN;
 const log = (e) => console.log(e);
@@ -17,14 +18,14 @@ function submitForm(form) {
     crudFetch.post(URI, submitDto)
         .then((user) => {
 
-            form.props.setNavItems(NavItemSets.getByRole(user.role));
+            NavItemSets.setByRole(user.role);
 
             form.setState({
                 email: "",
                 password: "",
-                errorMessage: ""
+                errorMessage: "",
+                isRedirected: true
             });
-            routie(Routes.AFTER_LOGIN)
         })
         .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist'}));
 }
@@ -35,7 +36,8 @@ export default class LoginForm extends React.Component {
         this.state = {
             email: "",
             password: "",
-            errorMessage: ""
+            errorMessage: "",
+            isRedirected: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setValue = this.setValue.bind(this);
@@ -55,6 +57,9 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
+        if (this.state.isRedirected){
+            return <Redirect to={Routes.AFTER_LOGIN} push />
+        }
         return (
             <div>
                 <div className="row centered-form">

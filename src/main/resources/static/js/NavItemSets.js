@@ -55,18 +55,28 @@ const NAV_ITEMS_TUTOR = [
 ];
 
 export default class NavItemSets {
-    static getByRole(role) {
-       if (role===Role.STUDENT) {
-           return NAV_ITEMS_STUDENT;
-       } else if (role===Role.TUTOR) {
-           return NAV_ITEMS_TUTOR;
-       }
-       return NAV_ITEMS_DEFAULT;
-    }
-
-    static getDefault(){
-        return NAV_ITEMS_DEFAULT;
-    }
 }
 
-NavItemSets.DEFAULT = NAV_ITEMS_DEFAULT;
+NavItemSets.setByRole = function(role) {
+    if (role === Role.STUDENT) {
+        NavItemSets.active = NAV_ITEMS_STUDENT;
+    } else if (role === Role.TUTOR) {
+        NavItemSets.active = NAV_ITEMS_TUTOR;
+    }
+    NavItemSets.active = NAV_ITEMS_DEFAULT;
+};
+
+NavItemSets.getByRole = function (role) {
+    if (role === Role.STUDENT) {
+        return NAV_ITEMS_STUDENT;
+    } else if (role === Role.TUTOR) {
+        return NAV_ITEMS_TUTOR;
+    }
+    return NAV_ITEMS_DEFAULT;
+};
+
+NavItemSets.setActiveToDefault = function () {
+    NavItemSets.active = NAV_ITEMS_DEFAULT;
+};
+
+NavItemSets.active =  NAV_ITEMS_DEFAULT;

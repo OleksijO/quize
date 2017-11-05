@@ -4,7 +4,6 @@
   "description": "<b>The application represents system of tests for tutors and students.</b>\r <hr>",
   "main": "app.jsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "browserify -t [ babelify --presets [ env react ] ] src/main/resources/static/js/main.js -o src/main/resources/static/dist/app.js"
   },
   "repository": {
@@ -19,12 +18,13 @@
   },
   "homepage": "https://github.com/OleksijO/quize#readme",
   "dependencies": {
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-env":"^1.6.1",
     "babelify": "^7.3.0",
     "crud-fetch": "^0.1.2",
     "react": "^15.6.2",
-    "react-dom": "^15.6.2"
+    "react-dom": "^15.6.2",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "browserify": "latest"

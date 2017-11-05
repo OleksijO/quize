@@ -1,40 +1,21 @@
 import React from 'react';
-
-const ACTIVE = " active";
+import NavItemSets from "../../NavItemSets";
+import NavBarItem from "./NavBarItem";
 
 export default class NavBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        let navItems = props.getNavItems();
-        let initItem = navItems.find((el) => el.href === props.initPath);
-        initItem = initItem ? initItem : navItems[0];
-        this.state = {activeItem: initItem};
-
-        this.setActiveItem = this.setActiveItem.bind(this);
-        this.isActiveItem = this.isActiveItem.bind(this);
-    }
-
-    setActiveItem(item) {
-        this.setState({
-            activeItem: item
-        })
-    }
-
-    isActiveItem(item) {
-        return this.state.activeItem === item;
-    }
-
     render() {
-        let parent = this;
+        let items = NavItemSets.active;
+        let activePath = document.location.pathname.substring(1);
+        if (!items.map((item) => item.href).includes(activePath)) {
+            activePath = '';
+        }
         return (
             <div>
                 <ul className="nav_bar">
-                    {this.props.getNavItems().map(function (item) {
+                    {items.map(function (item) {
                         return (
-                            <NavItem item={item}
-                                     isActive={parent.isActiveItem}
-                                     setActive={parent.setActiveItem}
+                            <NavBarItem item={item}
+                                     isActive={item.href === activePath}
                                      key={item.title + item.href}
                             />);
                     })}
@@ -44,24 +25,3 @@ export default class NavBar extends React.Component {
     }
 }
 
-class NavItem extends React.Component {
-    constructor(props){
-        super(props);
-        this.setActive = this.setActive.bind(this);
-    }
-
-    render() {
-        let activeStyle = this.props.isActive(this.props.item) ? ACTIVE : '';
-        return (
-            <li className={"nav_item " + activeStyle} onClick={this.setActive}>
-                <a className={"nav_item_href " + activeStyle}
-                   href={"#" + this.props.item.href}>{this.props.item.title}</a>
-            </li>
-        )
-    }
-
-    setActive() {
-        this.props.setActive(this.props.item);
-        routie(this.props.item.href);
-    }
-}
