@@ -1,4 +1,4 @@
 export default class Role{}
 
 Role.STUDENT = 'STUDENT';
-Role.TUTOR = 'TUTOR';
+Role.TUTOR = 'TEACHER';

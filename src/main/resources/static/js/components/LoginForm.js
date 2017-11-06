@@ -14,9 +14,11 @@ function submitForm(form) {
         email: form.state.email,
         password: form.state.password,
     };
-
+    console.log("Requesting login info for " + form.state.email);
     crudFetch.post(URI, submitDto)
         .then((user) => {
+
+            console.log("Found "+user.role+": " + user.firstName + " "+ user.lastName);
 
             NavItemSets.setByRole(user.role);
 
@@ -26,6 +28,8 @@ function submitForm(form) {
                 errorMessage: "",
                 isRedirected: true
             });
+
+            console.log("Redirecting to after login page...");
         })
         .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist'}));
 }
@@ -58,7 +62,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         if (this.state.isRedirected){
-            return <Redirect to={Routes.AFTER_LOGIN} push />
+            return <Redirect to={Routes.AFTER_LOGIN} />
         }
         return (
             <div>

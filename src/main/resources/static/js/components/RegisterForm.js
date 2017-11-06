@@ -3,6 +3,7 @@ import crudFetch from 'crud-fetch';
 
 import Routes from './navigation/Routes';
 import Role from '../Role';
+import {Redirect} from "react-router-dom";
 
 const URI = Routes.REGISTER;
 const log = (e) => console.log(e);
@@ -30,7 +31,8 @@ function submitForm(form) {
                 lastName: "",
                 email: "",
                 password: "",
-                isTutor: false
+                isTutor: false,
+                shouldRedirectToLogin: true
             });
             routie(Routes.LOGIN)
         })
@@ -47,7 +49,8 @@ export default class RegisterForm extends React.Component {
             password: "",
             passwordConfirmation: "",
             isTutor: false,
-            errorMessage: ""
+            errorMessage: "",
+            shouldRedirectToLogin: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setValue = this.setValue.bind(this);
@@ -67,6 +70,9 @@ export default class RegisterForm extends React.Component {
     }
 
     render() {
+        if (this.state.shouldRedirectToLogin){
+            return <Redirect to={Routes.LOGIN} />
+        }
         return (
             <div>
                 <div className="row centered-form">

@@ -58,25 +58,23 @@ export default class NavItemSets {
 }
 
 NavItemSets.setByRole = function(role) {
+    console.log("Setting nav items by role: "+role+" ...");
     if (role === Role.STUDENT) {
         NavItemSets.active = NAV_ITEMS_STUDENT;
+        console.log("Nav items set to: STUDENT");
     } else if (role === Role.TUTOR) {
         NavItemSets.active = NAV_ITEMS_TUTOR;
+        console.log("Nav items set to: TUTOR");
+    } else {
+        NavItemSets.active = NAV_ITEMS_DEFAULT;
+        console.log("Nav items set to: default");
     }
-    NavItemSets.active = NAV_ITEMS_DEFAULT;
-};
-
-NavItemSets.getByRole = function (role) {
-    if (role === Role.STUDENT) {
-        return NAV_ITEMS_STUDENT;
-    } else if (role === Role.TUTOR) {
-        return NAV_ITEMS_TUTOR;
-    }
-    return NAV_ITEMS_DEFAULT;
 };
 
 NavItemSets.setActiveToDefault = function () {
+    console.log("Resetting nav items ... ");
     NavItemSets.active = NAV_ITEMS_DEFAULT;
+    console.log("Nav items set to: default");
 };
 
 NavItemSets.active =  NAV_ITEMS_DEFAULT;

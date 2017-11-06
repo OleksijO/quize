@@ -1,4 +1,5 @@
-export default class Routes {}
+export default class Routes {
+}
 
 Routes.LOGIN = 'login';
 Routes.LOGOUT = 'logout';
@@ -9,3 +10,4 @@ Routes.ABOUT = 'about';
 Routes.ADD_TEST = 'add_test';
 
 Routes.AFTER_LOGIN = Routes.SUBJECTS;
+Routes.AFTER_LOGOUT = Routes.HOME;

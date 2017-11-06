@@ -8,16 +8,12 @@ export default class App extends React.Component {
             <div>
                 <div className="row justify-content-center">
                     <div className="col-10">
-                        <div id="navBar">
-                            <NavBar getNavItems={this.getNavItems} initPath={this.props.path}/>
-                        </div>
+                        <NavBar getNavItems={this.getNavItems} initPath={this.props.path}/>
                     </div>
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-10">
-                        <div id="content">
-                            {this.props.children}
-                        </div>
+                        {this.props.children}
                     </div>
                 </div>
             </div>

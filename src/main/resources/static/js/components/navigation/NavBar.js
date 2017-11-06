@@ -5,7 +5,12 @@ import NavBarItem from "./NavBarItem";
 export default class NavBar extends React.Component {
     render() {
         let items = NavItemSets.active;
-        let activePath = document.location.pathname.substring(1);
+        // BrowserRouter
+        // let activePath = document.location.pathname.substring(1);
+        // console.log(">>> Current pathname:"+document.location.pathname);
+        // HashRouter
+        let activePath = document.location.hash.substring(2);
+        console.log(">>> Current pathname:"+document.location.hash);
         if (!items.map((item) => item.href).includes(activePath)) {
             activePath = '';
         }
