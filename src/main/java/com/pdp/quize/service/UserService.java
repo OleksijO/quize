@@ -42,8 +42,7 @@ public class UserService {
 
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
-        Role role = LocalTime.now().getSecond() % 2 == 0 ? Role.STUDENT : Role.TEACHER;
-        dto.setRole(role.toString());
+        dto.setRole(user.getRole().getAuthority());
         return dto;
     }
 

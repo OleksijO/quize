@@ -5,7 +5,7 @@ Routes.LOGIN = 'login';
 Routes.LOGOUT = 'logout';
 Routes.REGISTER = 'registration';
 Routes.HOME = '';
-Routes.SUBJECTS = 'subjects';
+Routes.SUBJECTS = 'subject';
 Routes.ABOUT = 'about';
 Routes.ADD_TEST = 'add_test';
 

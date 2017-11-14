@@ -3,12 +3,12 @@ import {HashRouter,Route} from 'react-router-dom'
 
 import Routes from "./components/navigation/Routes"
 import App from "./components/App";
-import CheckBoxQuestion from "./components/CheckBoxQuestion";
 import Home from "./components/Home";
 import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";
 import About from "./components/About";
 import Logout from "./components/Logout";
+import Subjects from "./components/subject/Subjects";
 
 export default class RoutesConfig {
 }
@@ -20,7 +20,7 @@ RoutesConfig.apply = function () {
         <HashRouter>
             <App>
                 <Route exact path={createPath(Routes.HOME)} component={Home}/>
-                <Route path={createPath(Routes.SUBJECTS)} component={CheckBoxQuestion}/>
+                <Route path={createPath(Routes.SUBJECTS)} component={Subjects}/>
                 <Route path={createPath(Routes.ABOUT)} component={About}/>
                 <Route path={createPath(Routes.REGISTER)} component={RegisterForm}/>
                 <Route path={createPath(Routes.LOGIN)} component={LoginForm}/>

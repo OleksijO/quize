@@ -2,6 +2,7 @@ import React from 'react';
 import crudFetch from 'crud-fetch';
 import Routes from './navigation/Routes'
 import NavItemSets from "../NavItemSets";
+import Role from "../Role";
 import {Redirect} from "react-router-dom";
 
 const URI = Routes.LOGIN;
@@ -20,18 +21,21 @@ function submitForm(form) {
 
             console.log("Found "+user.role+": " + user.firstName + " "+ user.lastName);
 
-            NavItemSets.setByRole(user.role);
+
+            Role.setCurrent(Role.of(user.role));
 
             form.setState({
                 email: "",
                 password: "",
-                errorMessage: "",
-                isRedirected: true
+                errorMessage: ""
             });
-
             console.log("Redirecting to after login page...");
+            NavItemSets.setByRole(user.role);
+            form.setState({isRedirected: true});
+
         })
         .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist'}));
+
 }
 
 export default class LoginForm extends React.Component {

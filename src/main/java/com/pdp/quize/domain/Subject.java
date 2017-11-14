@@ -15,13 +15,22 @@ public class Subject implements Serializable {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User tutor;
-    @ManyToMany(mappedBy = "subjects")
-    private List<User> students;
-    @OneToMany(mappedBy = "subject")
-    private List<Test> tests;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = true)
+//    private User tutor;
+//    @ManyToMany(mappedBy = "subjects")
+//    private List<User> students;
+//    @OneToMany(mappedBy = "subject")
+//    private List<Test> tests;
+
+    public Subject(Long subjectId, String name) {
+        this.name = name;
+        this.subjectId = subjectId != null ? BigInteger.valueOf(subjectId) : null;
+    }
+
+    public Subject() {
+        // default
+    }
 
     public BigInteger getSubjectId() {
         return subjectId;
@@ -41,30 +50,30 @@ public class Subject implements Serializable {
         return this;
     }
 
-    public User getTutor() {
-        return tutor;
-    }
-
-    public Subject setTutor(User tutor) {
-        this.tutor = tutor;
-        return this;
-    }
-
-    public List<User> getStudents() {
-        return students;
-    }
-
-    public Subject setStudents(List<User> students) {
-        this.students = students;
-        return this;
-    }
-
-    public List<Test> getTests() {
-        return tests;
-    }
-
-    public Subject setTests(List<Test> tests) {
-        this.tests = tests;
-        return this;
-    }
+//    public User getTutor() {
+//        return tutor;
+//    }
+//
+//    public Subject setTutor(User tutor) {
+//        this.tutor = tutor;
+//        return this;
+//    }
+//
+//    public List<User> getStudents() {
+//        return students;
+//    }
+//
+//    public Subject setStudents(List<User> students) {
+//        this.students = students;
+//        return this;
+//    }
+//
+//    public List<Test> getTests() {
+//        return tests;
+//    }
+//
+//    public Subject setTests(List<Test> tests) {
+//        this.tests = tests;
+//        return this;
+//    }
 }
