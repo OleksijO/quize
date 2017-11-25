@@ -23,7 +23,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:application_properties.properties")
+@PropertySource("classpath:db.properties")
 @ComponentScan({
         "com.pdp.quize.controller",
         "com.pdp.quize.service"

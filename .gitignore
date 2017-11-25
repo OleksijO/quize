@@ -26,6 +26,8 @@ hs_err_pid*
 .gradle/
 .idea/
 quize.iml
+quize.ipr
+quize.iws
 node_modules/
 /src/main/resources/static/dist/app.js
 package-lock.json
