@@ -8,16 +8,6 @@ import java.security.Principal;
 
 @RestController
 public class GeneralController {
-    @GetMapping("/")
-    public RestMsg hello(){
-        return new RestMsg("Hello World!");
-    }
-
-    @GetMapping("/api/test")
-    public RestMsg apitest(){
-        return new RestMsg("Hello apiTest!");
-    }
-
     @GetMapping(value = "/api/hello", produces = "application/json")
     public RestMsg helloUser(){
         // The authenticated user can be fetched using the SecurityContextHolder

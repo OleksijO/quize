@@ -5,7 +5,7 @@ import Routes from './navigation/Routes';
 import Role from '../Role';
 import {Redirect} from "react-router-dom";
 
-const URI = Routes.REGISTER;
+const URI = "/api/" + Routes.REGISTER;
 const log = (e) => console.log(e);
 
 function submitForm(form) {

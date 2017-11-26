@@ -1,43 +1,58 @@
 package com.pdp.quize.security;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity( debug = true )
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity(debug = true)
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
                 .formLogin().disable() // disable form authentication
                 .anonymous().disable() // disable anonymous user
+                .authorizeRequests()
+                .antMatchers("/", "/css/**", "/dist/**", "/index.html").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .httpBasic().and()
+                .authorizeRequests().antMatchers("/index.html", "/app.html", "/")
+                .permitAll().anyRequest().authenticated()
+                .and()
                 // restricting access to authenticated users
                 .authorizeRequests().anyRequest().authenticated();
     }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication() // creating user in memory
-				.withUser("user")
-				.password("password").roles("USER")
-				.and()
-				.withUser("admin")
-				.password("password").authorities("ROLE_ADMIN");
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication() // creating user in memory
+                .withUser("user")
+                .password("password").roles("USER")
+                .and()
+                .withUser("admin")
+                .password("password").authorities("ROLE_ADMIN");
+    }
 
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// provides the default AuthenticationManager as a Bean
-		return super.authenticationManagerBean();
-	}
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // provides the default AuthenticationManager as a Bean
+        return super.authenticationManagerBean();
+    }
+
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/").anyRequest();
+//    }
 }

@@ -1,11 +1,11 @@
 package com.pdp.quize.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @EnableResourceServer
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
+
     @Value("${security.oauth2.resource.id}")
     private String resourceId;
 
@@ -45,14 +46,20 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .requestMatcher(new OAuthRequestedMatcher())
+
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
+
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // when restricting access to 'Roles' you must remove the "ROLE_" part role
                 // for "ROLE_USER" use only "USER"
                 .antMatchers("/api/hello").access("hasAnyRole('USER')")
+                .antMatchers("/api/me").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/admin").hasRole("ADMIN")
+                // use the full name when specifying authority access
+                .antMatchers("/api/registration").permitAll()
+                .antMatchers("/api/login").permitAll()
                 // restricting all access to /api/** to authenticated users
                 .antMatchers("/api/**").authenticated();
     }
@@ -68,4 +75,5 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
             } else return false;
         }
     }
+
 }

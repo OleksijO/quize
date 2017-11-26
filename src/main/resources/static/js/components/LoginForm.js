@@ -5,7 +5,7 @@ import NavItemSets from "../NavItemSets";
 import Role from "../Role";
 import {Redirect} from "react-router-dom";
 
-const URI = Routes.LOGIN;
+const URI = "/api/" + Routes.LOGIN;
 const log = (e) => console.log(e);
 
 function submitForm(form) {
@@ -21,14 +21,15 @@ function submitForm(form) {
 
             console.log("Found "+user.role+": " + user.firstName + " "+ user.lastName);
 
-
             Role.setCurrent(Role.of(user.role));
 
-            form.setState({
-                email: "",
-                password: "",
-                errorMessage: ""
-            });
+            if (Role.current !== Role.GUEST) {
+                form.setState({
+                    email: "",
+                    password: "",
+                    errorMessage: ""
+                });
+            }
             console.log("Redirecting to after login page...");
             NavItemSets.setByRole(user.role);
             form.setState({isRedirected: true});
@@ -65,7 +66,7 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-        if (this.state.isRedirected){
+        if (this.state.isRedirected && Role.current !== Role.GUEST){
             return <Redirect to={Routes.AFTER_LOGIN} />
         }
         return (
