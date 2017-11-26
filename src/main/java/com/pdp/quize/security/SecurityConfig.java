@@ -1,4 +1,4 @@
-package com.pdp.quize.security.config;
+package com.pdp.quize.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +13,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity( debug = true )
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.formLogin().disable() // disable form authentication
-				.anonymous().disable() // disable anonymous user
-				.authorizeRequests().anyRequest().denyAll(); // denying all access
-	}
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .formLogin().disable() // disable form authentication
+                .anonymous().disable() // disable anonymous user
+                .httpBasic().and()
+                // restricting access to authenticated users
+                .authorizeRequests().anyRequest().authenticated();
+    }
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
