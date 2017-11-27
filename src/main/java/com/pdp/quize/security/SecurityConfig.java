@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("password").roles("USER")
                 .and()
                 .withUser("admin")
-                .password("password").authorities("ROLE_ADMIN");
+                .password("password1").authorities("ROLE_ADMIN");
     }
 
     @Override

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/registration")
+@RequestMapping("/registration")
 public class RegistrationController {
 
     @Autowired

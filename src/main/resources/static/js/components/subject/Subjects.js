@@ -1,18 +1,19 @@
 import React from 'react';
-import crudFetch from 'crud-fetch';
 
 import Routes from '../navigation/Routes';
 import Subject from "./Subject";
+import SecuredCrudFetch from "../../SecuredCrudFetch";
 
-const URI = "/api/" + Routes.SUBJECTS;
+const URI_DELETE = "/api/edit/" + Routes.SUBJECTS;
 const URI_ALL = "/api/" + Routes.SUBJECTS + "/all";
+const URI_SAVE_ALL = "/api/edit/" + Routes.SUBJECTS + "/all";
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
 
     let submitDto = form.state.subjects;
 
-    crudFetch.post(URI_ALL, submitDto)
+    SecuredCrudFetch.post(URI_SAVE_ALL, submitDto)
         .then((data) => {
             setIndexes(data);
             form.setState({
@@ -32,7 +33,7 @@ function setIndexes(array) {
 }
 
 function fetchAll(component) {
-    crudFetch.get(URI_ALL)
+    SecuredCrudFetch.get(URI_ALL)
         .then(data => {
             if (data || data.length !== 0) {
                 setIndexes(data);
@@ -92,7 +93,7 @@ export default class Subjects extends React.Component {
         // updatedSubjects.slice(index, 1);
         this.setState({subjects: updatedSubjects, errorMessage: "Subject deleted"});
         if (subjToDelete.subjectId && subjToDelete.subjectId > 0) {
-            crudFetch.remove(URI, subjToDelete)
+            SecuredCrudFetch.remove(URI_DELETE, subjToDelete)
                 .then(() => this.setState({errorMessage: "Subject deleted from DB"}))
                 .catch((error) => this.setState({errorMessage: error.toString()}));
         }

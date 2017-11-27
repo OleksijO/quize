@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subject")
+@RequestMapping("/api")
 public class SubjectController {
 
     @Autowired
     private SubjectService subjectService;
 
-    @RequestMapping(value="/all", method = RequestMethod.GET)
+    @RequestMapping(value="/subject/all", method = RequestMethod.GET)
     public List<SubjectDto> getAll(){
         return subjectService.getAll();
     }
 
-    @RequestMapping(value="/all", method = RequestMethod.POST)
+    @RequestMapping(value="/edit/subject/all", method = RequestMethod.POST)
     public List<SubjectDto> update(@RequestBody List<SubjectDto> dtos){
         subjectService.saveOrUpdate(dtos);
         return subjectService.getAll();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value="/edit/subject", method = RequestMethod.DELETE)
     public SubjectDto remove(@RequestBody SubjectDto dto){
         subjectService.remove(dto);
         dto.setSubjectId(null);

@@ -2,11 +2,19 @@ import React from 'react';
 import crudFetch from 'crud-fetch';
 import Routes from './navigation/Routes'
 import NavItemSets from "../NavItemSets";
+import SecuredCrudFetch from "../SecuredCrudFetch";
+import Auth from "../Auth";
 import Role from "../Role";
 import {Redirect} from "react-router-dom";
 
-const URI = "/api/" + Routes.LOGIN;
+const URI = Routes.LOGIN;
+const OAUTH_URI = Routes.OAUTH;
 const log = (e) => console.log(e);
+
+
+const ROLE = 'user';
+// const ROLE = 'admin'
+
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
@@ -19,23 +27,46 @@ function submitForm(form) {
     crudFetch.post(URI, submitDto)
         .then((user) => {
 
-            console.log("Found "+user.role+": " + user.firstName + " "+ user.lastName);
+            console.log("Found " + user.role + ": " + user.firstName + " " + user.lastName);
 
             Role.setCurrent(Role.of(user.role));
 
             if (Role.current !== Role.GUEST) {
-                form.setState({
-                    email: "",
-                    password: "",
-                    errorMessage: ""
-                });
-            }
-            console.log("Redirecting to after login page...");
-            NavItemSets.setByRole(user.role);
-            form.setState({isRedirected: true});
+                let authObj = {
+                    method: 'post',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa('trusted-app:secret'),
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: "grant_type=password" +
+                    "&username=" +ROLE+ //submitDto.email,
+                    '&password=password'//submitDto.password
+                };
 
+                SecuredCrudFetch.authPost(OAUTH_URI, authObj)
+                    .then((res) => {
+                        if (res && res.access_token) {
+                            Auth.setToken(res.access_token);
+                            console.log("Authorized:" + res.access_token);
+                            form.setState({
+                                email: "",
+                                password: "",
+                                errorMessage: ""
+                            });
+                            console.log("Redirecting to after login page...");
+                            NavItemSets.setByRole(user.role);
+                            form.setState({isRedirected: true});
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("! Not Authorized !: " + err.error + " : " + err.message);
+                        form.setState({
+                            errorMessage: "! Not Authorized !: " + err.error + " : " + err.message
+                        });
+                    });
+            }
         })
-        .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist'}));
+        .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist (' + error + ')'}));
 
 }
 
@@ -66,8 +97,8 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-        if (this.state.isRedirected && Role.current !== Role.GUEST){
-            return <Redirect to={Routes.AFTER_LOGIN} />
+        if (this.state.isRedirected && Role.current !== Role.GUEST) {
+            return <Redirect to={Routes.AFTER_LOGIN}/>
         }
         return (
             <div>
