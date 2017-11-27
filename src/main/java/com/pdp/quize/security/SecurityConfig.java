@@ -19,17 +19,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-
+                .antMatcher("/resources/static/**").authorizeRequests().anyRequest().permitAll().and()
                 .formLogin().disable() // disable form authentication
                 .anonymous().disable() // disable anonymous user
-                .authorizeRequests()
-                .antMatchers("/", "/css/**", "/dist/**", "/index.html").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic().and()
-                .authorizeRequests().antMatchers("/index.html", "/app.html", "/")
-                .permitAll().anyRequest().authenticated()
-                .and()
+
                 // restricting access to authenticated users
                 .authorizeRequests().anyRequest().authenticated();
     }
@@ -50,9 +43,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // provides the default AuthenticationManager as a Bean
         return super.authenticationManagerBean();
     }
-
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/").anyRequest();
-//    }
 }
