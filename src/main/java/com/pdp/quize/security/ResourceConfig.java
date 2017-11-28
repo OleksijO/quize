@@ -44,24 +44,20 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/registration").permitAll().anyRequest().permitAll()
-                .and()
+        http
                 .requestMatcher(new OAuthRequestedMatcher())
-                .authorizeRequests()
-
-                .and()
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // when restricting access to 'Roles' you must remove the "ROLE_" part role
                 // for "ROLE_USER" use only "USER"
-                //.antMatchers("/api/hello").access("hasAnyRole('USER')")
-                //.antMatchers("/api/admin").hasRole("ADMIN")
+                .antMatchers("/api/hello").access("hasAnyRole('USER')")
+                .antMatchers("/api/admin").hasRole("ADMIN")
                 // use the full name when specifying authority access
-                .antMatchers(HttpMethod.DELETE, "/api/subject").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/api/subject/all").access("hasAnyRole('USER', 'ADMIN')")
+
+                .antMatchers(HttpMethod.GET,"/api/subject/all").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/subject").access("hasAnyRole('USER')")
                 .antMatchers(HttpMethod.POST,"/api/edit/**").access("hasAnyRole('ADMIN')")
 
                 // restricting all access to /api/** to authenticated users

@@ -12,8 +12,8 @@ const OAUTH_URI = Routes.OAUTH;
 const log = (e) => console.log(e);
 
 
-const ROLE = 'user';
-// const ROLE = 'admin'
+const ROLE_USER = 'user';
+const ROLE_ADMIN = 'admin';
 
 
 function submitForm(form) {
@@ -31,6 +31,16 @@ function submitForm(form) {
 
             Role.setCurrent(Role.of(user.role));
 
+            //TODO: remove hardcoded roles
+            let role = ROLE_USER;
+            let pswdSuffix='';
+            if (Role.current === Role.TUTOR){
+                role = ROLE_ADMIN;
+                pswdSuffix='1';
+            }
+
+            console.log("SECURITY ROLE " + role + " GRANTED");
+
             if (Role.current !== Role.GUEST) {
                 let authObj = {
                     method: 'post',
@@ -38,9 +48,10 @@ function submitForm(form) {
                         'Authorization': 'Basic ' + btoa('trusted-app:secret'),
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: "grant_type=password" +
-                    "&username=" +ROLE+ //submitDto.email,
-                    '&password=password'//submitDto.password
+                    body: "grant_type=password" + //client_credentials
+                    // TODO: add truly credentials
+                    "&username=" + role +               //submitDto.email,
+                    '&password=password'+ pswdSuffix    //submitDto.password
                 };
 
                 SecuredCrudFetch.authPost(OAUTH_URI, authObj)

@@ -50,6 +50,7 @@ SecuredCrudFetch.post = function(url, payload) {
 SecuredCrudFetch.authPost = function(url, payload) {
     return new Promise((resolve, reject) => {
         fetch(url, payload).then(res => {
+            console.log(res);
             if (res.ok) {
                 return res.json();
             }
