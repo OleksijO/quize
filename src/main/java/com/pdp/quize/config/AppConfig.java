@@ -24,7 +24,8 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @ComponentScan({
         "com.pdp.quize.controller",
-        "com.pdp.quize.service"
+        "com.pdp.quize.service",
+        "com.pdp.quize.security.impl"
 
 })
 @EnableJpaRepositories("com.pdp.quize.repository")

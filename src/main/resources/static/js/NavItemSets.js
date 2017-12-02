@@ -27,7 +27,7 @@ const NAV_ITEMS_STUDENT = [
     },
     {
         title: 'Subjects',
-        href: Routes.SUBJECTS
+        href: Routes.SUBJECT
     },
     {
         title: 'Logout',
@@ -42,7 +42,7 @@ const NAV_ITEMS_TUTOR = [
     },
     {
         title: 'Subjects',
-        href: Routes.SUBJECTS
+        href: Routes.SUBJECT
     },
     {
         title: 'Add Test',

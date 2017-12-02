@@ -1,20 +1,13 @@
 package com.pdp.quize.service;
 
-import com.pdp.quize.constant.Role;
 import com.pdp.quize.domain.Subject;
-import com.pdp.quize.domain.User;
-import com.pdp.quize.domain.dto.LoginDto;
-import com.pdp.quize.domain.dto.RegistrationDto;
 import com.pdp.quize.domain.dto.SubjectDto;
 import com.pdp.quize.repository.SubjectRepository;
-import com.pdp.quize.util.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

@@ -31,16 +31,6 @@ function submitForm(form) {
 
             Role.setCurrent(Role.of(user.role));
 
-            //TODO: remove hardcoded roles
-            let role = ROLE_USER;
-            let pswdSuffix='';
-            if (Role.current === Role.TUTOR){
-                role = ROLE_ADMIN;
-                pswdSuffix='1';
-            }
-
-            console.log("SECURITY ROLE " + role + " GRANTED");
-
             if (Role.current !== Role.GUEST) {
                 let authObj = {
                     method: 'post',
@@ -50,8 +40,8 @@ function submitForm(form) {
                     },
                     body: "grant_type=password" + //client_credentials
                     // TODO: add truly credentials
-                    "&username=" + role +               //submitDto.email,
-                    '&password=password'+ pswdSuffix    //submitDto.password
+                    "&username=" + submitDto.email +
+                    '&password='+ submitDto.password
                 };
 
                 SecuredCrudFetch.authPost(OAUTH_URI, authObj)
@@ -64,6 +54,7 @@ function submitForm(form) {
                                 password: "",
                                 errorMessage: ""
                             });
+                            console.log("SECURITY ROLE " + Role.current + " GRANTED");
                             console.log("Redirecting to after login page...");
                             NavItemSets.setByRole(user.role);
                             form.setState({isRedirected: true});
@@ -103,8 +94,6 @@ export default class LoginForm extends React.Component {
         let object = {};
         object[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState(object);
-        log(this.state);
-        log(event);
     }
 
     render() {

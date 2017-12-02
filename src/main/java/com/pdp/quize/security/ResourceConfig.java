@@ -1,5 +1,6 @@
 package com.pdp.quize.security;
 
+import com.pdp.quize.constant.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -45,35 +46,22 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .requestMatcher(new OAuthRequestedMatcher())
+
+                .requestMatcher((request) -> request.getServletPath().startsWith("/api/"))
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                // when restricting access to 'Roles' you must remove the "ROLE_" part role
-                // for "ROLE_USER" use only "USER"
-                .antMatchers("/api/hello").access("hasAnyRole('USER')")
-                .antMatchers("/api/admin").hasRole("ADMIN")
-                // use the full name when specifying authority access
 
-                .antMatchers(HttpMethod.GET,"/api/subject/all").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/subject").access("hasAnyRole('USER')")
-                .antMatchers(HttpMethod.POST,"/api/edit/**").access("hasAnyRole('ADMIN')")
+                .antMatchers("/api/hello").hasRole(Role.STUDENT.getAuthority())
+                .antMatchers("/api/admin").hasRole(Role.TEACHER.getAuthority())
+
+                .antMatchers(HttpMethod.GET,"/api/public/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/student/**").hasRole(Role.STUDENT.getAuthority())
+                .antMatchers(HttpMethod.POST,"/api/tutor/**").hasRole(Role.TEACHER.getAuthority())
 
                 // restricting all access to /api/** to authenticated users
                 .antMatchers("/api/**").authenticated();
-    }
-
-    private static class OAuthRequestedMatcher implements RequestMatcher {
-        public boolean matches(HttpServletRequest request) {
-            // Determine if the resource called is "/api/**"
-            String path = request.getServletPath();
-            if ( path.length() >= 5 ) {
-                path = path.substring(0, 5);
-                boolean isApi = path.equals("/api/");
-                return isApi;
-            } else return false;
-        }
     }
 
 }

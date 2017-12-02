@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/public")
-public class SubjectController {
+@RequestMapping("/api/tutor")
+public class SubjectForTutorController {
 
     @Autowired
     private SubjectService subjectService;
 
-    @RequestMapping(value="/subject/all", method = RequestMethod.GET)
-    public List<SubjectDto> getAll(){
+    @RequestMapping(value="/subject/all", method = RequestMethod.POST)
+    public List<SubjectDto> update(@RequestBody List<SubjectDto> dtos){
+        subjectService.saveOrUpdate(dtos);
         return subjectService.getAll();
     }
 

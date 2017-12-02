@@ -20,7 +20,7 @@ RoutesConfig.apply = function () {
         <HashRouter>
             <App>
                 <Route exact path={createPath(Routes.HOME)} component={Home}/>
-                <Route path={createPath(Routes.SUBJECTS)} component={Subjects}/>
+                <Route path={createPath(Routes.SUBJECT)} component={Subjects}/>
                 <Route path={createPath(Routes.ABOUT)} component={About}/>
                 <Route path={createPath(Routes.REGISTER)} component={RegisterForm}/>
                 <Route path={createPath(Routes.LOGIN)} component={LoginForm}/>

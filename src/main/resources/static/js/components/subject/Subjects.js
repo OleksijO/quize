@@ -4,9 +4,12 @@ import Routes from '../navigation/Routes';
 import Subject from "./Subject";
 import SecuredCrudFetch from "../../SecuredCrudFetch";
 
-const URI_DELETE = "/api/edit/" + Routes.SUBJECTS;
-const URI_ALL = "/api/" + Routes.SUBJECTS + "/all";
-const URI_SAVE_ALL = "/api/edit/" + Routes.SUBJECTS + "/all";
+const BASE_URI = "/api";
+const BASE_STUDENT = BASE_URI + "/student";
+const BASE_TUTOR = BASE_URI + "/tutor";
+const URI_DELETE = BASE_STUDENT + '/' + Routes.SUBJECT;
+const URI_ALL = BASE_URI + '/public/' + Routes.SUBJECT + "/all";
+const URI_SAVE_ALL = BASE_TUTOR + '/' + Routes.SUBJECT + "/all";
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
@@ -85,7 +88,7 @@ export default class Subjects extends React.Component {
 
         let updatedSubjects = [];
         this.state.subjects.map(subj => {
-            if (subj.index!==subjToDelete.index){
+            if (subj.index !== subjToDelete.index) {
                 updatedSubjects.push(subj);
             }
         });
@@ -95,7 +98,10 @@ export default class Subjects extends React.Component {
         if (subjToDelete.subjectId && subjToDelete.subjectId > 0) {
             SecuredCrudFetch.remove(URI_DELETE, subjToDelete)
                 .then(() => this.setState({errorMessage: "Subject deleted from DB"}))
-                .catch((error) => this.setState({errorMessage: error.toString()}));
+                .catch((error) => {
+                    updatedSubjects.push(subjToDelete);
+                    this.setState({subjects: updatedSubjects, errorMessage: error.toString()});
+                });
         }
     }
 
