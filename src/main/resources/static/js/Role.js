@@ -4,8 +4,9 @@ export default class Role{
 Role.STUDENT = 'STUDENT';
 Role.TUTOR = 'TEACHER';
 Role.GUEST = 'GUEST';
-Role.current = null;
-Role.setCurrent = role => Role.current = role;
+let current = null;
+Role.setCurrent = role => current = role;
+Role.getCurrent = role => Role.of(current);
 
 Role.of = (role) => {
     if (role === Role.STUDENT) {

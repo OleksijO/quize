@@ -3,6 +3,7 @@ import React from 'react';
 import Routes from '../navigation/Routes';
 import Subject from "./Subject";
 import SecuredCrudFetch from "../../SecuredCrudFetch";
+import {Redirect} from "react-router-dom";
 
 const BASE_URI = "/api";
 const BASE_STUDENT = BASE_URI + "/student";
@@ -46,7 +47,8 @@ function fetchAll(component) {
             }
         })
         .catch(error => {
-            this.setState({errorMessage: error.toString()})
+            console.log("Error while fetchig subjects");
+            component.setState({errorMessage: error.toString(), shouldRedirectToLogin:true})
         });
 
 }
@@ -56,7 +58,8 @@ export default class Subjects extends React.Component {
         super(props);
         this.state = {
             subjects: [],
-            errorMessage: ""
+            errorMessage: "",
+            shouldRedirectToLogin: false
         };
         this.updateState = this.updateState.bind(this);
         this.deleteEntry = this.deleteEntry.bind(this);
@@ -119,10 +122,14 @@ export default class Subjects extends React.Component {
 
     render() {
         let parent = this;
+        if (this.state.shouldRedirectToLogin){
+            this.setState({shouldRedirectToLogin: false});
+            return <Redirect to={Routes.LOGIN}/>
+        }
         return (
             <div>
                 <div className="row centered-form">
-                    <div className="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                    <div className="col-xs-10 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h3 className="panel-title">
@@ -146,7 +153,7 @@ export default class Subjects extends React.Component {
                                     </div>
                                 </form>
                                 <div className="row">
-                                    <div className="col-xs-12 col-sm-12 col-md-12">
+                                    <div className="col-xs-10 col-sm-12 col-md-12">
                                         <span style={{color: "red"}}>{this.state.errorMessage}</span>
                                     </div>
                                 </div>

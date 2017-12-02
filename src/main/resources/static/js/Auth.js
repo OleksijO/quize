@@ -1,8 +1,8 @@
 export default class Auth {
 }
 
-Auth.token = "";
+let token = "";
 
-Auth.setToken = (newToken) => Auth.token = "Bearer " + newToken;
+Auth.setToken = (newToken) => token = "Bearer " + newToken;
 
-Auth.getAuthorization = () => Auth.token;
+Auth.getAuthorization = () => token;

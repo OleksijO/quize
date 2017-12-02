@@ -76,7 +76,7 @@ export default class RegisterForm extends React.Component {
         return (
             <div>
                 <div className="row centered-form">
-                    <div className="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                    <div className="col-xs-10 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h3 className="panel-title">
@@ -142,7 +142,7 @@ export default class RegisterForm extends React.Component {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-xs-12 col-sm-12 col-md-12">
+                                        <div className="col-xs-10 col-sm-12 col-md-12">
                                             <span style={{color:"red"}}>{this.state.errorMessage}</span>
                                         </div>
                                     </div>

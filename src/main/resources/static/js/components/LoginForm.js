@@ -9,12 +9,6 @@ import {Redirect} from "react-router-dom";
 
 const URI = Routes.LOGIN;
 const OAUTH_URI = Routes.OAUTH;
-const log = (e) => console.log(e);
-
-
-const ROLE_USER = 'user';
-const ROLE_ADMIN = 'admin';
-
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
@@ -31,7 +25,7 @@ function submitForm(form) {
 
             Role.setCurrent(Role.of(user.role));
 
-            if (Role.current !== Role.GUEST) {
+            if (Role.getCurrent() !== Role.GUEST) {
                 let authObj = {
                     method: 'post',
                     headers: {
@@ -97,13 +91,13 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-        if (this.state.isRedirected && Role.current !== Role.GUEST) {
+        if (this.state.isRedirected && Role.getCurrent() !== Role.GUEST) {
             return <Redirect to={Routes.AFTER_LOGIN}/>
         }
         return (
             <div>
                 <div className="row centered-form">
-                    <div className="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                    <div className="col-xs-10 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h3 className="panel-title">
@@ -130,7 +124,7 @@ export default class LoginForm extends React.Component {
                                         <input type="submit" value="Log in" className="btn btn-info btn-block"/>
                                     </div>
                                     <div className="row">
-                                        <div className="col-xs-12 col-sm-12 col-md-12">
+                                        <div className="col-xs-10 col-sm-12 col-md-12">
                                             <span style={{color: "red"}}>{this.state.errorMessage}</span>
                                         </div>
                                     </div>
