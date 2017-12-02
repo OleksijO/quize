@@ -7,7 +7,6 @@ export default class NavBar extends React.Component {
         let items = NavItemSets.active;
         // BrowserRouter
         // let activePath = document.location.pathname.substring(1);
-        // console.log(">>> Current pathname:"+document.location.pathname);
         // HashRouter
         let activePath = document.location.hash.substring(2);
         console.log(">>> Current pathname:"+document.location.hash);

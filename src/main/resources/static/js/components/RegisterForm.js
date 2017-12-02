@@ -6,7 +6,6 @@ import Role from '../Role';
 import {Redirect} from "react-router-dom";
 
 const URI = Routes.REGISTER;
-const log = (e) => console.log(e);
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
@@ -65,8 +64,6 @@ export default class RegisterForm extends React.Component {
         let object = {};
         object[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState(object);
-        log(this.state);
-        log(event);
     }
 
     render() {

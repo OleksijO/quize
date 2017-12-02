@@ -7,11 +7,18 @@ import Routes from "./navigation/Routes";
 
 
 const Logout = () => {
+
+    console.log("Switching nav bar....");
+
     NavItemSets.setActiveToDefault();
+
     console.log("Logging out....");
-    console.log("Redirecting to "+ Routes.AFTER_LOGOUT);
+
     Auth.setToken("");
+
     console.log("Token cleared.");
+    console.log("Redirecting to "+ Routes.AFTER_LOGOUT);
+
     return <Redirect to={Routes.AFTER_LOGOUT} push/>
 };
 

@@ -17,7 +17,9 @@ function submitForm(form) {
         email: form.state.email,
         password: form.state.password,
     };
+
     console.log("Requesting login info for " + form.state.email);
+
     crudFetch.post(URI, submitDto)
         .then((user) => {
 
@@ -26,45 +28,46 @@ function submitForm(form) {
             Role.setCurrent(Role.of(user.role));
 
             if (Role.getCurrent() !== Role.GUEST) {
-                let authObj = {
-                    method: 'post',
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('trusted-app:secret'),
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: "grant_type=password" + //client_credentials
-                    // TODO: add truly credentials
-                    "&username=" + submitDto.email +
-                    '&password='+ submitDto.password
-                };
-
-                SecuredCrudFetch.authPost(OAUTH_URI, authObj)
-                    .then((res) => {
-                        if (res && res.access_token) {
-                            Auth.setToken(res.access_token);
-                            console.log("Authorized:" + res.access_token);
-                            form.setState({
-                                email: "",
-                                password: "",
-                                errorMessage: ""
-                            });
-                            console.log("SECURITY ROLE " + Role.current + " GRANTED");
-                            console.log("Redirecting to after login page...");
-                            NavItemSets.setByRole(user.role);
-                            form.setState({isRedirected: true});
-                        }
-                    })
-                    .catch((err) => {
-                        console.log("! Not Authorized !: " + err.error + " : " + err.message);
-                        form.setState({
-                            errorMessage: "! Not Authorized !: " + err.error + " : " + err.message
-                        });
-                    });
+                performLogin(form, submitDto);
             }
         })
         .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist (' + error + ')'}));
-
 }
+
+
+function performLogin(form, submitDto) {
+    let authObj = Auth.getAuthObject(submitDto.email, submitDto.password);
+
+    SecuredCrudFetch.authPost(OAUTH_URI, authObj)
+        .then((res) => {
+            if (res && res.access_token) {
+                Auth.setToken(res.access_token);
+
+                form.setState({
+                    email: "",
+                    password: "",
+                    errorMessage: ""
+                });
+
+                console.log("Authorized:" + res.access_token);
+                console.log("SECURITY ROLE " + Role.getCurrent() + " GRANTED");
+                console.log("Switching nav bar for " + Role.getCurrent());
+                console.log("Redirecting to after login page...");
+
+                NavItemSets.setByRole(Role.getCurrent());
+                form.setState({isRedirected: true});
+            }
+        })
+        .catch((err) => {
+
+            console.log("! Not Authorized !: " + err.toString());
+
+            form.setState({
+                errorMessage: "! Not Authorized !: " + err.toString()
+            });
+        });
+}
+
 
 export default class LoginForm extends React.Component {
     constructor(props) {

@@ -87,8 +87,6 @@ export default class Subjects extends React.Component {
     }
 
     deleteEntry(subjToDelete) {
-        console.log("delete in parent subjects");
-
         let updatedSubjects = [];
         this.state.subjects.map(subj => {
             if (subj.index !== subjToDelete.index) {
@@ -110,13 +108,11 @@ export default class Subjects extends React.Component {
 
     addSubject() {
         let subjects = this.state.subjects;
-        console.log(subjects);
         subjects.push({
             subjectId: null,
             name: "",
             index: subjects.length
         });
-        console.log(subjects);
         this.setState({subjects: subjects});
     }
 

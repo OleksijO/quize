@@ -18,8 +18,6 @@ export default class Subject extends React.Component {
     }
 
     deleteEntry() {
-        console.log("delete in subject:");
-        console.log(this.props.subject);
         this.props.deleteEntry(this.props.subject);
     }
 
