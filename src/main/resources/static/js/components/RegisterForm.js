@@ -1,5 +1,4 @@
 import React from 'react';
-import crudFetch from 'crud-fetch';
 
 import Routes from './navigation/Routes';
 import Role from '../Role';
@@ -15,31 +14,61 @@ function submitForm(form) {
         lastName: form.state.lastName,
         email: form.state.email,
         password: form.state.password,
-        role: form.state.isTutor===true? Role.TUTOR: Role.STUDENT
+        role: form.state.isTutor === true ? Role.TUTOR : Role.STUDENT
     };
 
-    if (submitDto.password !== form.state.passwordConfirmation){
+    if (submitDto.password !== form.state.passwordConfirmation) {
         form.setState({errorMessage: 'Password and confirm pwrd fields should be the same'});
         return;
     }
 
-    crudFetch.put(URI, submitDto)
-        .then(() => {
-            form.setState({
-                firstName: "",
-                lastName: "",
-                email: "",
-                password: "",
-                isTutor: false,
-                shouldRedirectToLogin: true
-            });
-            routie(Routes.LOGIN)
+    performRegistration(URI, submitDto)
+        .then((res) => {
+            if (res.status === 500) {
+                throw new Error(res.message);
+            }
+            if (!res.status) {
+                form.setState({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    password: "",
+                    isTutor: false,
+                    shouldRedirectToLogin: true
+                });
+            } else {
+                console.log(res);
+
+                let errors = "";
+                res.errors.map(error => {
+                    errors = errors + '[' + error.code + '] '
+                });
+
+                form.setState({errorMessage: "Validation error: " + errors})
+            }
         })
         .catch((error) => form.setState({errorMessage: error.toString()}));
 }
 
+let performRegistration = function (url, payload) {
+    return new Promise((resolve) => {
+        fetch(url, {
+            method: 'put',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        }).then(res => {
+            return res.json();
+        }).then(body => resolve(body))
+    });
+
+};
+
 export default class RegisterForm extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             firstName: "",
@@ -67,8 +96,8 @@ export default class RegisterForm extends React.Component {
     }
 
     render() {
-        if (this.state.shouldRedirectToLogin){
-            return <Redirect to={Routes.LOGIN} />
+        if (this.state.shouldRedirectToLogin) {
+            return <Redirect to={Routes.LOGIN}/>
         }
         return (
             <div>
@@ -140,7 +169,7 @@ export default class RegisterForm extends React.Component {
                                     </div>
                                     <div className="row">
                                         <div className="col-xs-10 col-sm-12 col-md-12">
-                                            <span style={{color:"red"}}>{this.state.errorMessage}</span>
+                                            <span style={{color: "red"}}>{this.state.errorMessage}</span>
                                         </div>
                                     </div>
                                 </form>

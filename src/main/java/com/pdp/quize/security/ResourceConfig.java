@@ -47,14 +47,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
 
-                .requestMatcher((request) -> request.getServletPath().startsWith("/api/"))
-                .csrf().disable()
-                .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-
-                .antMatchers("/api/hello").hasRole(Role.STUDENT.getAuthority())
-                .antMatchers("/api/admin").hasRole(Role.TEACHER.getAuthority())
 
                 .antMatchers(HttpMethod.GET,"/api/public/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/student/**").hasRole(Role.STUDENT.getAuthority())

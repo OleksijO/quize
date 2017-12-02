@@ -25,7 +25,8 @@ import java.util.Properties;
 @ComponentScan({
         "com.pdp.quize.controller",
         "com.pdp.quize.service",
-        "com.pdp.quize.security.impl"
+        "com.pdp.quize.security.impl",
+        "com.pdp.quize.domain"
 
 })
 @EnableJpaRepositories("com.pdp.quize.repository")
@@ -96,4 +97,5 @@ public class AppConfig {
 
         return properties;
     }
+
 }

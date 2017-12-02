@@ -28,14 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder( passwordEncoder );
-//        provider.setUserDetailsService( userDetailsService() );
-//        return provider;
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().disable() // disable form authentication
                 .anonymous().disable() // disable anonymous user
+                .csrf().disable()
                 .httpBasic()
                 // restricting access to authenticated users
                 .and()
