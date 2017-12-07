@@ -1,47 +1,34 @@
 import React from 'react';
-import crudFetch from 'crud-fetch';
+import {Redirect} from "react-router-dom";
+import jwt_decode from 'jwt-decode';
+
 import Routes from './navigation/Routes'
 import NavItemSets from "../NavItemSets";
 import SecuredCrudFetch from "../SecuredCrudFetch";
 import Auth from "../Auth";
 import Role from "../Role";
-import {Redirect} from "react-router-dom";
 
-const URI = Routes.LOGIN;
+
 const OAUTH_URI = Routes.OAUTH;
 
 function submitForm(form) {
     form.setState({errorMessage: ''});
 
-    let submitDto = {
-        email: form.state.email,
-        password: form.state.password,
-    };
-
     console.log("Requesting login info for " + form.state.email);
 
-    crudFetch.post(URI, submitDto)
-        .then((user) => {
-
-            console.log("Found " + user.role + ": " + user.firstName + " " + user.lastName);
-
-            Role.setCurrent(Role.of(user.role));
-
-            if (Role.getCurrent() !== Role.GUEST) {
-                performLogin(form, submitDto);
-            }
-        })
-        .catch((error) => form.setState({errorMessage: 'A pair of specified user and password does not exist (' + error + ')'}));
-}
-
-
-function performLogin(form, submitDto) {
-    let authObj = Auth.getAuthObject(submitDto.email, submitDto.password);
-
+    let authObj = Auth.getAuthObject(form.state.email, form.state.password);
     SecuredCrudFetch.authPost(OAUTH_URI, authObj)
         .then((res) => {
             if (res && res.access_token) {
-                Auth.setToken(res.access_token);
+                let token = res.access_token;
+                let decodedToken = jwt_decode(token);
+                console.log(decodedToken);
+                let role = decodedToken.authorities[0].substring(5);
+                Role.setCurrent(Role.of(role));
+
+                console.log("Found role: [" + Role.getCurrent() + "]");
+
+                Auth.setToken(token);
 
                 form.setState({
                     email: "",
@@ -49,23 +36,28 @@ function performLogin(form, submitDto) {
                     errorMessage: ""
                 });
 
-                console.log("Authorized:" + res.access_token);
-                console.log("SECURITY ROLE " + Role.getCurrent() + " GRANTED");
+                console.log("\n");
+                console.log("Authorized:");
+                console.log(decodedToken);
+                console.log("\n");
+                console.log("SECURITY ROLE [" + role + "] GRANTED");
                 console.log("Switching nav bar for " + Role.getCurrent());
-                console.log("Redirecting to after login page...");
+                console.log("Redirecting to after-login page...");
+                console.log("\n");
 
                 NavItemSets.setByRole(Role.getCurrent());
                 form.setState({isRedirected: true});
             }
         })
         .catch((err) => {
-
-            console.log("! Not Authorized !: " + err.toString());
-
+            let errorMessage = "! Not Authorized !: " +
+                'A pair of specified user and password does not exist (' + err + ')';
+            console.log(errorMessage);
             form.setState({
-                errorMessage: "! Not Authorized !: " + err.toString()
+                errorMessage: errorMessage
             });
         });
+
 }
 
 

@@ -22,10 +22,11 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^7.3.0",
     "crud-fetch": "^0.1.2",
+    "isomorphic-fetch": "latest",
+    "jwt-decode": "^2.2.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
-    "react-router-dom": "^4.2.2",
-    "isomorphic-fetch": "latest"
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "browserify": "latest"
