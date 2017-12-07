@@ -27,7 +27,6 @@ import java.util.Properties;
         "com.pdp.quize.service",
         "com.pdp.quize.security.impl",
         "com.pdp.quize.domain"
-
 })
 @EnableJpaRepositories("com.pdp.quize.repository")
 public class AppConfig {
