@@ -15,12 +15,11 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
 @Configuration
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @PropertySource("classpath:db.properties")
 @ComponentScan({
         "com.pdp.quize.controller",
@@ -43,15 +42,16 @@ public class AppConfig {
         ds.setUsername(env.getProperty("db.user"));
         ds.setPassword(env.getProperty("db.password"));
         ds.setInitialSize(5);
-        ds.setMaxActive(100);
-        ds.setMaxIdle(30);
-        ds.setMaxWait(10000);
+        ds.setMaxActive(30);
+        ds.setMaxIdle(10);
+        ds.setMaxWait(100);
         ds.setMinEvictableIdleTimeMillis(30000);
         ds.setTimeBetweenEvictionRunsMillis(20000);
-        ds.setRemoveAbandonedTimeout(60);
+        ds.setRemoveAbandonedTimeout(30);
         ds.setLogAbandoned(true);
         ds.setRemoveAbandoned(true);
         ds.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;" +
+                "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;" +
                 "org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer");
 
         return ds;

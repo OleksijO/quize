@@ -9,12 +9,16 @@ public enum Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return this.name();
+        return "ROLE_" + this.name();
     }
 
-    public static Role of(String value){
+    public String getValue(){
+        return this.toString();
+    }
+
+    public static Role of(String value) {
         return Arrays.stream(values())
-                .filter(role->role.toString()
+                .filter(role -> role.toString()
                         .equalsIgnoreCase(value))
                 .findAny()
                 .orElse(null);

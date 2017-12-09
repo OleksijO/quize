@@ -44,32 +44,32 @@ public class RegistrationDtoValidator implements Validator {
     }
 
     private void checkEmail(RegistrationDto dto, Errors errors) {
-        if (!emailPattern.matcher(dto.getEmail()).matches()){
+        if (!emailPattern.matcher(dto.getEmail()).matches()) {
             errors.rejectValue("Email", "Email should be valid!");
         }
     }
 
     private void checkFirstName(RegistrationDto dto, Errors errors) {
-        if (!namePattern.matcher(dto.getFirstName()).matches()){
+        if (!namePattern.matcher(dto.getFirstName()).matches()) {
             errors.rejectValue("FirstName", "First name should contain only letters and space. Length: 1-20");
         }
     }
 
     private void checkLastName(RegistrationDto dto, Errors errors) {
-        if (!namePattern.matcher(dto.getLastName()).matches()){
+        if (!namePattern.matcher(dto.getLastName()).matches()) {
             errors.rejectValue("LastName", "Last name should contain only letters and space. Length: 1-20");
         }
     }
 
     private void checkPassword(RegistrationDto dto, Errors errors) {
-        if (!passwordPattern.matcher(dto.getPassword()).matches()){
+        if (!passwordPattern.matcher(dto.getPassword()).matches()) {
             errors.rejectValue("Password", "Password should contain only letters, numbers, '_' and '-'. Length: 4-12");
         }
     }
 
     private void checkRole(RegistrationDto dto, Errors errors) {
-        for (Role role:Role.values()){
-            if (role.getAuthority().equals(dto.getRole())){
+        for (Role role : Role.values()) {
+            if (role.getValue().equals(dto.getRole())) {
                 return;
             }
         }

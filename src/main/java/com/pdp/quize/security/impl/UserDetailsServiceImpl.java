@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -23,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         new org.springframework.security.core.userdetails.User(
                                 user.getEmail(),
                                 user.getPassword(),
-                                AuthorityUtils.createAuthorityList("ROLE_"+user.getRole().getAuthority())))
+                                AuthorityUtils.createAuthorityList(user.getRole().getAuthority())))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
