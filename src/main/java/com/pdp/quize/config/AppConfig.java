@@ -48,7 +48,7 @@ public class AppConfig {
         ds.setMinEvictableIdleTimeMillis(30000);
         ds.setTimeBetweenEvictionRunsMillis(20000);
         ds.setRemoveAbandonedTimeout(30);
-        ds.setLogAbandoned(true);
+        ds.setLogAbandoned(false);
         ds.setRemoveAbandoned(true);
         ds.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;" +
                 "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;" +
