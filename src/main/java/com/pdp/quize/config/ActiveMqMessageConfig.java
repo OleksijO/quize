@@ -1,8 +1,13 @@
 package com.pdp.quize.config;
 
-import com.pdp.quize.message.MessageManager;
-import com.pdp.quize.message.TextMessageLoggerSubscriber;
-import com.pdp.quize.message.TextMessagePublisher;
+import com.pdp.quize.domain.dto.SubjectDto;
+import com.pdp.quize.message.text.TextMessageLoggerSubscriber;
+import com.pdp.quize.message.text.TextMessageManager;
+import com.pdp.quize.message.text.TextMessagePublisher;
+import com.pdp.quize.message.two.way.AllSubjectsRequestObjectHandler;
+import com.pdp.quize.message.two.way.ObjectMessageTwoWayClientFactory;
+import com.pdp.quize.message.two.way.ObjectMessageTwoWayServiceFactory;
+import com.pdp.quize.message.two.way.TwoWayMessageClient;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
@@ -15,6 +20,7 @@ import org.springframework.core.env.Environment;
 
 import javax.jms.*;
 import java.net.URI;
+import java.util.ArrayList;
 
 @Configuration
 @ComponentScan({
@@ -24,6 +30,8 @@ public class ActiveMqMessageConfig {
 
     @Autowired
     private Environment env;
+    @Autowired
+    private AllSubjectsRequestObjectHandler allSubjectsRequestObjectHandler;
 
     @Bean(destroyMethod = "stop")
     public BrokerService brokerService() {
@@ -48,11 +56,32 @@ public class ActiveMqMessageConfig {
     @Bean
     @DependsOn("brokerService")
     public ConnectionFactory connectionFactory() {
-        brokerService();
         String host = env.getProperty("message.broker.host");
         String port = env.getProperty("message.broker.port");
 
         return new ActiveMQConnectionFactory("tcp://" + host + ":" + port);
+    }
+
+    @Bean
+    @DependsOn("brokerService")
+    public ConnectionFactory connectionFactory1() {
+        return createNewConnectionFactory();
+    }
+
+    private ConnectionFactory createNewConnectionFactory(){
+        String host = env.getProperty("message.broker.host");
+        String port = env.getProperty("message.broker.port");
+        ActiveMQConnectionFactory connectionFactory =
+                new ActiveMQConnectionFactory("tcp://" + host + ":" + port);
+        connectionFactory.setTrustAllPackages(true);
+
+        return connectionFactory;
+    }
+
+    @Bean
+    @DependsOn("brokerService")
+    public ConnectionFactory connectionFactory2() {
+        return createNewConnectionFactory();
     }
 
     @Bean(destroyMethod = "close")
@@ -74,8 +103,8 @@ public class ActiveMqMessageConfig {
     }
 
     @Bean(destroyMethod = "destroy")
-    public MessageManager subjectQueueMessageManager() throws JMSException {
-        return new MessageManager.Builder()
+    public TextMessageManager subjectQueueMessageManager() throws JMSException {
+        return new TextMessageManager.Builder()
                 .withConnection(connection())
                 .withQueueName(env.getProperty("message.subject.queue.name"))
                 .withSubscriber(new TextMessageLoggerSubscriber("TEXT MESSAGE LOGGER"))
@@ -85,5 +114,35 @@ public class ActiveMqMessageConfig {
     @Bean
     public TextMessagePublisher subjectPublisher() throws JMSException {
         return subjectQueueMessageManager().createPublisher();
+    }
+
+    @Bean
+    public TwoWayMessageClient<String, ArrayList<SubjectDto>> allSubjectsViaMqGetter(){
+        try {
+            Connection connection = connectionFactory1().createConnection();
+            ObjectMessageTwoWayClientFactory<String, ArrayList<SubjectDto>> factory =
+                    new ObjectMessageTwoWayClientFactory.Builder<String, ArrayList<SubjectDto>>()
+                    .withConnection(connection)
+                    .withQueueName(env.getProperty("message.subject.queue.name"))
+                    .build();
+            return factory.getClient();
+        } catch (JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean
+    public Object registerAllSubjectsViaMqService(){
+        try {
+            Connection connection = connectionFactory2().createConnection();
+            return new ObjectMessageTwoWayServiceFactory.Builder<String, ArrayList<SubjectDto>>()
+                    .withConnection(connection)
+                    .withQueueName(env.getProperty("message.subject.queue.name"))
+                    .withRequestObjectHandler(allSubjectsRequestObjectHandler)
+                    .build();
+
+        } catch (JMSException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

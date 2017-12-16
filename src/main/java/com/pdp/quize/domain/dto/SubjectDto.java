@@ -1,8 +1,9 @@
 package com.pdp.quize.domain.dto;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
-public class SubjectDto {
+public class SubjectDto implements Serializable {
     private Long subjectId;
     private String name;
 

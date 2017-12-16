@@ -1,6 +1,6 @@
 package com.pdp.quize.domain.dto;
 
-public class RegistrationDto extends LoginDto{
+public class RegistrationDto extends LoginDto {
     private String firstName;
     private String lastName;
     private String role;

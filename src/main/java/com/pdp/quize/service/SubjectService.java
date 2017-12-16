@@ -2,7 +2,7 @@ package com.pdp.quize.service;
 
 import com.pdp.quize.domain.Subject;
 import com.pdp.quize.domain.dto.SubjectDto;
-import com.pdp.quize.message.TextMessagePublisher;
+import com.pdp.quize.message.text.TextMessagePublisher;
 import com.pdp.quize.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

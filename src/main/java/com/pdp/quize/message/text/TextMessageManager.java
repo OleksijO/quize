@@ -1,4 +1,4 @@
-package com.pdp.quize.message;
+package com.pdp.quize.message.text;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,13 +7,13 @@ import javax.jms.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MessageManager {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MessageManager.class);
+public class TextMessageManager {
+    private final static Logger LOGGER = LoggerFactory.getLogger(TextMessageManager.class);
 
     private Session session;
     private Queue queue;
 
-    public MessageManager(Session session, Queue queue) {
+    public TextMessageManager(Session session, Queue queue) {
         this.session = session;
         this.queue = queue;
     }
@@ -50,20 +50,20 @@ public class MessageManager {
             return this;
         }
 
-        public MessageManager build() {
+        public TextMessageManager build() {
             try {
                 checkParams();
 
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
                 Queue queue = session.createQueue(queueName);
-                MessageManager messageManager =
-                        new MessageManager(session, queue);
+                TextMessageManager messageManager =
+                        new TextMessageManager(session, queue);
                 registerSubscribers(session, queue);
                 connection.start();
                 return messageManager;
 
             } catch (JMSException e) {
-                LOGGER.error("Error occurred while instantiating MessageManager", e);
+                LOGGER.error("Error occurred while instantiating TextMessageManager", e);
                 throw new RuntimeException(e);
             }
         }
