@@ -30,7 +30,7 @@ node {
 
 jar {
     baseName = 'quize'
-    version =  '1.0.0'
+    version = '1.0.0'
 }
 
 springBoot {
@@ -42,49 +42,49 @@ bootRun {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") {
-  //      exclude module: "spring-boot-starter-logging"
+        //      exclude module: "spring-boot-starter-logging"
     }
-    compile("org.springframework.boot:spring-boot-starter-actuator") {
-  //      exclude module: "spring-boot-starter-logging"
-    }
-    compile("org.springframework.boot:spring-boot-starter-security") {
-  //      exclude module: "spring-boot-starter-logging"
-    }
-    compile("org.springframework.security.oauth:spring-security-oauth2") {
-       // exclude module: "spring-boot-starter-logging"
-    }
-    compile("org.springframework.security:spring-security-jwt") {
-   //     exclude module: "spring-boot-starter-logging"
-    }
-    compile("org.springframework.boot:spring-boot-starter-aop") {
-        //     exclude module: "spring-boot-starter-logging"
-    }
-    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.12'
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.security:spring-security-jwt")
+
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.12'
+
     compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.10.RELEASE'
     compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.13.6.RELEASE'
     compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.11.6.RELEASE'
+
     compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '7.0.72'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
     compile "mysql:mysql-connector-java:5.1.44"
+
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.2'
-    compile("org.aspectj:aspectjweaver")
+
+    compile("org.springframework.boot:spring-boot-starter-activemq")
+
     //compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
+
 }
 
 task packUI(type: NpmTask) {
-    def folder = new File( 'src/main/resources/static/dist' )
-    if( !folder.exists() ) {
+    def folder = new File('src/main/resources/static/dist')
+    if (!folder.exists()) {
         folder.mkdirs()
     }
 
     args = ['run', 'build']
 }
-
 
 processResources.dependsOn 'packUI'
 

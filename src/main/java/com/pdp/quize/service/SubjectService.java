@@ -2,8 +2,10 @@ package com.pdp.quize.service;
 
 import com.pdp.quize.domain.Subject;
 import com.pdp.quize.domain.dto.SubjectDto;
+import com.pdp.quize.message.TextMessagePublisher;
 import com.pdp.quize.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.stream.StreamSupport;
 public class SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
+    @Autowired @Qualifier("subjectPublisher")
+    private TextMessagePublisher publisher;
 
     @Transactional
     public void saveOrUpdate(List<SubjectDto> subjectsDto){
@@ -23,6 +27,17 @@ public class SubjectService {
                 .map(this::toEntity)
                 .collect(Collectors.toList());
         subjectRepository.save(subjects);
+        sendMessage("Subject list updated. New list:\n" + buildSubjectList(subjects));
+    }
+
+    private void sendMessage(String text) {
+        publisher.send(text);
+    }
+
+    private String buildSubjectList(List<Subject> subjects) {
+        return subjects.stream()
+                .map(Subject::getName)
+                .collect(Collectors.joining("\n"));
     }
 
     public Subject toEntity(SubjectDto dto){
@@ -43,6 +58,7 @@ public class SubjectService {
     public void remove(SubjectDto dto) {
         if (dto!= null && dto.getSubjectId()!=null) {
             subjectRepository.delete(new BigInteger(dto.getSubjectId().toString()));
+            sendMessage("Subject list updated. Subject [" + dto.getName() + "] is no longer available");
         }
     }
 }
