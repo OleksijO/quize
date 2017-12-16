@@ -54,12 +54,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.12'
 
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.10.RELEASE'
-    compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.13.6.RELEASE'
-    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.11.6.RELEASE'
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '7.0.72'
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+    //compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '7.0.72'
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.10.Final'
     compile "mysql:mysql-connector-java:5.1.44"
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
